@@ -1,38 +1,38 @@
 package entity;
 
 public class User {
-    public class User {
-        private Long userId;
+
+        private Long id;
         private String login;
         private String password;
         private String email;
         private int age;
 
         public User() {
-            this.userId++;
+            id = 0L;
             login = "login";
             password = "pass";
             email = "mail@example.com";
             age = 0;
         }
 
-        public User(Long userId, String login, String password, String email, int age) {
-            this.userId = userId;
+        public User(Long id, String login, String password, String email, int age) {
+            this.id = id;
             this.login = login;
             this.password = password;
             this.email = email;
             this.age = age;
         }
 
-        public User(Long userId, String login, String password) {
-            this.userId = userId;
+        public User(Long id, String login, String password) {
+            this.id = id;
             this.login = login;
             this.password = password;
             this.email = "mail@example.com";
             this.age = 0;
         }
 
-        public Long getUserId() {
-            return userId;
+        public Long getId() {
+            return id;
         }
 }
