@@ -1,4 +1,4 @@
-package impl;
+package service;
 
 import entity.Product;
 import iface.ProductService;

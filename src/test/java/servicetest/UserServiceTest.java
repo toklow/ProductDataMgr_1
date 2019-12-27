@@ -1,9 +1,9 @@
 package servicetest;
 
 import entity.User;
-import impl.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import service.UserServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
