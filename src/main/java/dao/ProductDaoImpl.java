@@ -13,9 +13,7 @@ public class ProductDaoImpl implements ProductDao {
     private String productFileName;
 
     // Constructor with empty list
-    public ProductDaoImpl(String productFileName) {
-        this.productFileName = productFileName;
-    }
+    public ProductDaoImpl(String productFileName) { this.productFileName = productFileName; }
 
     // Constructor with non-empty list
     public ProductDaoImpl(String productFileName, List<Product> products) {
@@ -41,17 +39,22 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     public Product getProductById(Long productId) throws IOException {
-
         List<Product> products = getAllProducts();
         for (Product product : products) {
-            if (product.getId() == productId) {
+            if (product.getId().compareTo(productId) == 0) {
                 return product;
             }
         }
         return null;
     }
 
-    public Product getProductByProductName(String productName) {
+    public Product getProductByProductName(String productName) throws IOException {
+        List<Product> products = getAllProducts();
+        for (Product product : products) {
+            if (product.getProductName().compareTo(productName) == 0) {
+                return product;
+            }
+        }
         return null;
     }
 
@@ -72,22 +75,32 @@ public class ProductDaoImpl implements ProductDao {
         printWriter.close();
     }
 
-    public void removeProductById(Long productId) {
-        ;
-    }
+    public void removeProductById(Long productId) throws IOException {
+        List<Product> products = getAllProducts();
+        for (Product product : products) {
+            if (product.getId().compareTo(productId) == 0) {
+                products.remove(product);
+                saveProducts(products);
+                break;
+            }
+        }
+     }
 
-    public void removeProductByName(String productName) {
-        ;
-    }
-
-    private String toString(Product product) {
-        return String.format(Locale.ENGLISH, "%d@%s@%8.2f@%8.2f@%s@%8.2f", product.getId(), product.getProductName(), product.getPrice(), product.getWeight(), product.getColor(), product.getProductCount());
+    public void removeProductByName(String productName) throws IOException {
+        List<Product> products = getAllProducts();
+        for (Product product : products) {
+            if (product.getProductName().compareTo(productName) == 0) {
+                products.remove(product);
+                saveProducts(products);
+                break;
+            }
+        }
     }
 
     private Product parseStringToProduct(String stringToParse) {
         String [] parse = new String [6];
         int beginIndex = 0;
-        int endIndex = 0;
+        int endIndex;
 
         for (int i = 0; i < 6; i++)
         {
@@ -103,6 +116,7 @@ public class ProductDaoImpl implements ProductDao {
         return new Product(Long.parseLong(parse[0]), parse[1], Float.parseFloat(parse[2]), Float.parseFloat(parse[3]), parse[4], Float.parseFloat(parse[5]) );
     }
 
-
-
+    private String toString(Product product) {
+        return String.format(Locale.ENGLISH, "%d@%s@%8.2f@%8.2f@%s@%8.2f", product.getId(), product.getProductName(), product.getPrice(), product.getWeight(), product.getColor(), product.getProductCount());
+    }
 }

@@ -11,13 +11,13 @@ public interface ProductDao {
 
     Product getProductById(Long productId) throws IOException;
 
-    Product getProductByProductName(String productName);
+    Product getProductByProductName(String productName) throws IOException;
 
     void saveProduct(Product product) throws IOException;
 
     void saveProducts(List<Product> products) throws FileNotFoundException;
 
-    void removeProductById(Long productId);
+    void removeProductById(Long productId) throws IOException;
 
-    void removeProductByName(String productName);
+    void removeProductByName(String productName) throws IOException;
 }

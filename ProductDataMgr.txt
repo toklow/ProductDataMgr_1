@@ -1,4 +1,4 @@
 100@Marvel@  200.75@   10.00@Brown@  100.00
-200@Shirt@  300.00@    0.40@White@    5.00
 210@Coat@  300.00@    0.40@White@    0.00
 300@Sneakers@  750.00@    0.80@Brown@   15.00
+400@Chardonnay Australia@   29.99@    0.90@White@  200.00

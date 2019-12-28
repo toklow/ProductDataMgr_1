@@ -54,6 +54,21 @@ public class ProductDaoTest {
         Assertions.assertNotNull(productFromFile);
     }
 
+    @Test
+    public void testRemoveProductById() throws IOException {
+        //is - File contents
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(this.daoFileName);
+        List<Product> products = productDaoImpl.getAllProducts();
+        Long productId = products.get(1).getId();
+
+        //then
+        productDaoImpl.removeProductById(productId);
+        Product productFromFile = productDaoImpl.getProductById(productId);
+
+        //expected
+        Assertions.assertNull(productFromFile);
+    }
+
     private List<Product> createProductsForTests() {
         List<Product> products = new ArrayList<Product>();
         products.add(new Product(100L, "Marvel", 200.75, 10.0, "Brown", 100.0));
