@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Objects;
+
 public class User {
 
     public final static String USER_SEPARATOR = "#";
@@ -57,5 +59,16 @@ public class User {
     @Override
     public String toString() {
         return id + USER_SEPARATOR + login + USER_SEPARATOR + password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;                                        // Same object
+        if (o == null || getClass() != o.getClass()) return false;         // Null object or wrong class
+
+        User user = (User) o;
+        return Objects.equals(this.id, user.id) &&
+                Objects.equals(this.login, user.login) &&
+                Objects.equals(this.password, user.password);
     }
 }

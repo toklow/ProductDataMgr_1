@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Objects;
+
 public class Cloth extends Product {
 
     private String size;
@@ -17,5 +19,14 @@ public class Cloth extends Product {
     @Override
     public String toString() {
         return super.toString() + PRODUCT_SEPARATOR + size + PRODUCT_SEPARATOR + material;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) return false;
+
+        Cloth cloth = (Cloth) o;
+        return Objects.equals(this.size, cloth.size) &&
+                Objects.equals(this.material, cloth.material);
     }
 }

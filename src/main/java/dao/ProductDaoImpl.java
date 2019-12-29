@@ -40,7 +40,7 @@ public class ProductDaoImpl implements ProductDao {
     public List<Product> getAllProducts() throws IOException {
         FileReader fileReader = new FileReader(this.fileName);
         BufferedReader reader = new BufferedReader(fileReader);
-        List<Product> products = new ArrayList<Product>();
+        List<Product> products = new ArrayList<>();
         String singleLineFromFile;
 
         while ((singleLineFromFile = reader.readLine()) != null) {
