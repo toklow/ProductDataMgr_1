@@ -2,39 +2,56 @@ package dao;
 
 import entity.User;
 import iface.UserDao;
+import utils.FileUtils;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
+import static entity.parser.UserParser.stringToUser;
 
 public class UserDaoImpl implements UserDao {
 
-    private String userFileName;
+    private String fileName;
 
     // Constructor with empty list
-    public UserDaoImpl(String userFileName) {
-        this.userFileName = userFileName;
+    public UserDaoImpl(String fileName) throws IOException {
+        this.fileName = fileName;
+        FileUtils.createNewFile(fileName);
     }
 
     // Constructor with non-empty list
-    public UserDaoImpl(String userFileName, List<User> users) throws FileNotFoundException {
-        this.userFileName = userFileName;
+    public UserDaoImpl(String fileName, List<User> users) throws IOException {
+        this.fileName = fileName;
+        FileUtils.createNewFile(fileName);
+
         this.saveUsers(users);
     }
 
-    public List<User> getAllUsers() {
-        return null;
+    public List<User> getAllUsers() throws IOException {
+        FileReader fileReader = new FileReader(this.fileName);
+        BufferedReader reader = new BufferedReader(fileReader);
+        List<User> users = new ArrayList<User>();
+        String singleLineFromFile;
+
+        while ((singleLineFromFile = reader.readLine()) != null) {
+            users.add(stringToUser(singleLineFromFile));
+        }
+        return users;
     }
 
-    public void saveUser(User user) {
+    public void saveUser(User user) throws IOException {
+        List<User> users = getAllUsers();
+        users.add(user);
+        saveUsers(users);
     }
 
     public void saveUsers(List<User> users) throws FileNotFoundException {
-        PrintWriter printWriter = new PrintWriter(this.userFileName);
+        FileUtils.clearFile(fileName);
 
+        PrintWriter printWriter = new PrintWriter(new FileOutputStream(this.fileName, true));
         for (User user : users) {
-            printWriter.println(this.toString(user));
+            printWriter.write(user.toString() + "\n");
         }
         printWriter.close();
     }
@@ -56,24 +73,4 @@ public class UserDaoImpl implements UserDao {
 
     }
 
-
-    private User parseStringToUser(String stringToParse) {
-        String[] parse = new String[6];
-        int beginIndex = 0;
-        int endIndex;
-
-        for (int i = 0; i < 5; i++) {
-            if ((endIndex = stringToParse.indexOf('@', beginIndex)) == -1) {
-                parse[i] = stringToParse.substring(beginIndex);
-            } else {
-                parse[i] = stringToParse.substring(beginIndex, endIndex);
-                beginIndex = endIndex + 1;
-            }
-        }
-        return new User(Long.parseLong(parse[0]), parse[1], parse[2], parse[3], Integer.parseInt(parse[5]));
-    }
-
-    private String toString(User user) {
-        return String.format(Locale.ENGLISH, "%d@%s@%s@%s@%d", user.getId(), user.getLogin(), user.getPassword(), user.getEmail(), user.getAge());
-    }
 }

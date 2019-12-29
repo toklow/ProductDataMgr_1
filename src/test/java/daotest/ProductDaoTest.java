@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ProductDaoTest {
 
-    private final String daoFileName = "ProductDataMgr.txt";
+    private final String daoFileName = "Products.txt";
 
     @Test
     public void testGetAllProducts() throws IOException {

@@ -24,6 +24,8 @@ public class ProductServiceImpl implements ProductService  {
         return this.products;
     }
 
+    public Integer getCountProducts() { return 0;}
+
     // It may happen that we have 2 products with the same name, so function should return a list of found products
     public Product getProductByName(String productName) {
 
@@ -72,4 +74,5 @@ public class ProductServiceImpl implements ProductService  {
         }
         return false;
     }
+
 }

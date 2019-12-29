@@ -2,38 +2,49 @@ package dao;
 
 import entity.Product;
 import iface.ProductDao;
+import utils.FileUtils;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
+import static entity.parser.ProductParser.stringToProduct;
 
 public class ProductDaoImpl implements ProductDao {
 
-    private String productFileName;
+    private String fileName;
+    private String productType;
 
     // Constructor with empty list
-    public ProductDaoImpl(String productFileName) { this.productFileName = productFileName; }
-
-    // Constructor with non-empty list
-    public ProductDaoImpl(String productFileName, List<Product> products) {
-        this.productFileName = productFileName;
-
-        try {
-            this.saveProducts(products);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+    public ProductDaoImpl(String fileName) throws IOException {
+        this.fileName = fileName;
+        this.productType = "PRODUCT";
+        FileUtils.createNewFile(fileName);
     }
 
+    // Constructor with empty list
+    public ProductDaoImpl(String fileName, String productType) throws IOException {
+        this.fileName = fileName;
+        this.productType = productType;
+        FileUtils.createNewFile(fileName);
+    }
+    // Constructor with non-empty list
+    public ProductDaoImpl(String fileName, String productType, List<Product> products) throws IOException {
+        this.fileName = fileName;
+        this.productType = productType;
+        FileUtils.createNewFile(fileName);
+
+        this.saveProducts(products);
+     }
+
     public List<Product> getAllProducts() throws IOException {
-        FileReader fileReader = new FileReader(this.productFileName);
+        FileReader fileReader = new FileReader(this.fileName);
         BufferedReader reader = new BufferedReader(fileReader);
         List<Product> products = new ArrayList<Product>();
-        String readOneLineFromFile;
+        String singleLineFromFile;
 
-        while ((readOneLineFromFile = reader.readLine()) != null) {
-            products.add(parseStringToProduct(readOneLineFromFile));
+        while ((singleLineFromFile = reader.readLine()) != null) {
+            products.add(stringToProduct(singleLineFromFile, this.productType));
         }
         return products;
     }
@@ -67,10 +78,11 @@ public class ProductDaoImpl implements ProductDao {
 
     //Save products means erase existing file contents
     public void saveProducts(List<Product> products) throws FileNotFoundException {
-        PrintWriter printWriter = new PrintWriter(this.productFileName);
+        FileUtils.clearFile(fileName);
 
+        PrintWriter printWriter = new PrintWriter(new FileOutputStream(this.fileName, true));
         for (Product product : products) {
-            printWriter.println(this.toString(product));
+            printWriter.write(product.toString() + "\n");
         }
         printWriter.close();
     }
@@ -97,26 +109,4 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
-    private Product parseStringToProduct(String stringToParse) {
-        String [] parse = new String [6];
-        int beginIndex = 0;
-        int endIndex;
-
-        for (int i = 0; i < 6; i++)
-        {
-            if ((endIndex = stringToParse.indexOf('@', beginIndex)) == -1) {
-                parse[i] = stringToParse.substring(beginIndex);
-            }
-            else {
-                parse[i] = stringToParse.substring(beginIndex, endIndex);
-                beginIndex = endIndex + 1;
-            }
-        }
-
-        return new Product(Long.parseLong(parse[0]), parse[1], Float.parseFloat(parse[2]), Float.parseFloat(parse[3]), parse[4], Float.parseFloat(parse[5]) );
-    }
-
-    private String toString(Product product) {
-        return String.format(Locale.ENGLISH, "%d@%s@%8.2f@%8.2f@%s@%8.2f", product.getId(), product.getProductName(), product.getPrice(), product.getWeight(), product.getColor(), product.getProductCount());
-    }
 }
