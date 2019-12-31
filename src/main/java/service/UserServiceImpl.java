@@ -1,42 +1,64 @@
 package service;
 
+import dao.UserDaoImpl;
 import entity.User;
+import exception.UserLoginAlreadyExistException;
+import exception.UserShortLengthLoginException;
+import exception.UserShortLengthPasswordException;
+import iface.UserDao;
 import iface.UserService;
+import utils.UserValidator;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
-    private List<User> users;
+    private final static String USER_FILE_NAME = "Users.txt";
+    private static UserServiceImpl instance = null;
+    private static UserDao userDao = null;
+
 
     // Constructor with empty list
-    public UserServiceImpl() {
-        this.users = new ArrayList<User>();
+    private UserServiceImpl() throws IOException {
+        userDao = new UserDaoImpl(USER_FILE_NAME);
     }
 
-    // Constructor with non-empty list
-    public UserServiceImpl(List<User> users) {
-        this.users = new ArrayList<User>(users);
+
+    public static UserServiceImpl getInstance() throws IOException {
+        if (instance == null) {
+            instance = new UserServiceImpl();
+        }
+        return instance;
     }
 
-    public List<User> getAllUsers() {
-        return this.users;
+    private static boolean isUserValid (User user)
+    {
+        UserValidator userValidator = UserValidator.getInstance();
+        boolean rslt = false;
+        try {
+            rslt = userValidator.isValidate(user);
+        } catch (UserShortLengthLoginException e) {
+            e.printStackTrace();
+        } catch (UserShortLengthPasswordException e) {
+            e.printStackTrace();
+        } catch (UserLoginAlreadyExistException e) {
+            e.printStackTrace();
+        } finally { return rslt;}
     }
 
-    public void addUser(User user) {
-        this.users.add(user);
+    public List<User> getAllUsers() throws IOException {
+        return userDao.getAllUsers();
     }
+
+    public void addUser(User user) throws IOException {
+        if  (isUserValid(user)) {
+             userDao.saveUser(user);
+        }
+      }
 
     public void removeUserById(Long id) {
-        for (User user : this.users)
-        {
-            if (user.getId().equals(id))
-            {
-                users.remove(user);
-                break;
-            }
-        }
+        userDao.removeUserById(id);
     }
 
 }
