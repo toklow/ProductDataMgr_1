@@ -3,10 +3,10 @@ import dao.UserDaoImpl;
 import entity.Boots;
 import entity.Cloth;
 import entity.User;
-import exception.NumberNotFoundException;
-import exception.UserNotFoundException;
+import exception.*;
 import iface.ProductDao;
 import iface.UserDao;
+import utils.UserValidator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,14 +28,26 @@ public class Main {
 
 
         List<User> users = new ArrayList<>();
-        users.add(new User(1L, "admin", "admin"));
-        users.add(new User(2L,"pablo", "pablo"));
-        users.add(new User(3L,"tokr", "tokr"));
+        users.add(new User(1L, "admin", "adminpass"));
+        users.add(new User(2L,"pablo", "pablopass"));
+        users.add(new User(3L,"tokr", "tokrpass"));
 
         UserDao userDao = new UserDaoImpl("users.txt");
         userDao.saveUsers(users);
 
+
         // For exceptions learning purposes
+        User user = new User(100L, "ktoklowicz", "mojehaslo");
+        if  (isUserValid(user) == true) {
+            users.add(user);
+            userDao.saveUser(user);
+        }
+        // For exceptions learning purposes
+        user = new User(100L, "ktoklowicz", "mojehaslo");
+        if  (isUserValid(user) == true) {
+            users.add(user);
+            userDao.saveUser(user);
+        }
         // boolean isException = isNumberNotFoundException(10);
         // isException = isUserNotFound(userDao,7L);
         // isException = isUserNotFound(userDao,"pabloP");
@@ -84,5 +96,20 @@ public class Main {
             e.printStackTrace();
             isException = true;
         } finally {return isException;}
+    }
+
+    private static boolean isUserValid (User user)
+    {
+        UserValidator userValidator = UserValidator.getInstance();
+        boolean rslt = false;
+        try {
+            rslt = userValidator.isValidate(user);
+        } catch (UserShortLengthLoginException e) {
+            e.printStackTrace();
+        } catch (UserShortLengthPasswordException e) {
+            e.printStackTrace();
+        } catch (UserLoginAlreadyExistException e) {
+            e.printStackTrace();
+        } finally { return rslt;}
     }
 }

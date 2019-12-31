@@ -1,3 +1,4 @@
-1#admin#admin
-2#pablo#pablo
-3#tokr#tokr
+1#admin#adminpass
+2#pablo#pablopass
+3#tokr#tokrpass
+100#ktoklowicz#mojehaslo
