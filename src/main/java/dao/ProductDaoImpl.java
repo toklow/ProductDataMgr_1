@@ -78,13 +78,19 @@ public class ProductDaoImpl implements ProductDao {
 
     //Save products means erase existing file contents
     public void saveProducts(List<Product> products) throws FileNotFoundException {
-        FileUtils.clearFile(fileName);
+        PrintWriter printWriter = null;
 
-        PrintWriter printWriter = new PrintWriter(new FileOutputStream(this.fileName, true));
-        for (Product product : products) {
-            printWriter.write(product.toString() + "\n");
+        FileUtils.clearFile(fileName);
+        try {
+            printWriter = new PrintWriter(new FileOutputStream(this.fileName, true));
+            for (Product product : products) {
+                printWriter.write(product.toString() + "\n");
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            printWriter.close();
         }
-        printWriter.close();
     }
 
     public void removeProductById(Long productId) throws IOException {

@@ -1,6 +1,7 @@
 package dao;
 
 import entity.User;
+import exception.UserNotFoundException;
 import iface.UserDao;
 import utils.FileUtils;
 
@@ -31,7 +32,7 @@ public class UserDaoImpl implements UserDao {
     public List<User> getAllUsers() throws IOException {
         FileReader fileReader = new FileReader(this.fileName);
         BufferedReader reader = new BufferedReader(fileReader);
-        List<User> users = new ArrayList<User>();
+        List<User> users = new ArrayList<>();
         String singleLineFromFile;
 
         while ((singleLineFromFile = reader.readLine()) != null) {
@@ -57,12 +58,24 @@ public class UserDaoImpl implements UserDao {
     }
 
 
-    public User getUserByLogin(String login) {
-        return null;
+    public User getUserByLogin(String login) throws IOException, UserNotFoundException {
+        List<User> users = getAllUsers();
+        for (User user : users) {
+            if (user.getLogin().equals(login)) {
+                return user;
+            }
+        }
+        throw new UserNotFoundException("User with Login: " +  login + " not found");
     }
 
-    public User getUserById(Long userId) {
-        return null;
+    public User getUserById(Long userId) throws IOException, UserNotFoundException {
+        List<User> users = getAllUsers();
+        for (User user : users) {
+            if (user.getId().compareTo(userId) == 0) {
+                return user;
+            }
+        }
+        throw new UserNotFoundException("User with Id:" +  userId + " not found");
     }
 
     public void removeUserByLogin(String login) {

@@ -63,12 +63,17 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;                                        // Same object
-        if (o == null || getClass() != o.getClass()) return false;         // Null object or wrong class
-
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
         User user = (User) o;
-        return Objects.equals(this.id, user.id) &&
-                Objects.equals(this.login, user.login) &&
-                Objects.equals(this.password, user.password);
+        return Objects.equals(this.getId(), user.getId()) &&
+                Objects.equals(this.getLogin(), user.getLogin()) &&
+                Objects.equals(this.getPassword(), user.getPassword());
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getLogin(), getPassword());
+    }
+
 }
