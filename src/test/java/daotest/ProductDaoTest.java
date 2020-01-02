@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static utils.FileUtils.enumProductType.PRODUCT;
+
+
 public class ProductDaoTest {
 
     private final String daoFileName = "Products.txt";
@@ -18,7 +21,7 @@ public class ProductDaoTest {
         //is - File contents
 
         //then
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(this.daoFileName);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(PRODUCT);
         List<Product> productsFromFile = productDaoImpl.getAllProducts();
 
         //expected
@@ -32,7 +35,7 @@ public class ProductDaoTest {
         List<Product> products = createProductsForTests();
 
         //then
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(this.daoFileName);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(PRODUCT);
         productDaoImpl.saveProducts(products);
         List<Product> productsFromFile = productDaoImpl.getAllProducts();
 
@@ -46,7 +49,7 @@ public class ProductDaoTest {
         Product product = createProductForTests();
 
         //then
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(this.daoFileName);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(PRODUCT);
         productDaoImpl.saveProduct(product);
         Product productFromFile = productDaoImpl.getProductById(product.getId());
 
@@ -57,7 +60,7 @@ public class ProductDaoTest {
     @Test
     public void testRemoveProductById() throws IOException {
         //is - File contents
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(this.daoFileName);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(PRODUCT);
         List<Product> products = productDaoImpl.getAllProducts();
         Long productId = products.get(1).getId();
 
@@ -70,7 +73,7 @@ public class ProductDaoTest {
     }
 
     private List<Product> createProductsForTests() {
-        List<Product> products = new ArrayList<Product>();
+        List<Product> products = new ArrayList<>();
         products.add(new Product(100L, "Marvel", 200.75, 10.0, "Brown", 100.0));
         products.add(new Product(200L, "Shirt", 300.0, 0.4, "White", 5.0));
         products.add(new Product(210L, "Coat", 300.0, 0.4, "White", 0.0));

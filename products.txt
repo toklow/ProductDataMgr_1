@@ -1,0 +1,4 @@
+100#Marvel#200.75#10.0#Brown#100.0
+200#Shirt#300.0#0.4#White#5.0
+210#Coat#300.0#0.4#White#0.0
+300#Sneakers#750.0#0.8#Brown#15.0

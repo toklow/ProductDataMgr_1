@@ -16,9 +16,14 @@ public class UserDaoImpl implements UserDao {
     private String fileName;
 
     // Constructor with empty list
-    public UserDaoImpl(String fileName) throws IOException {
+    public UserDaoImpl(String fileName) {
         this.fileName = fileName;
-        FileUtils.createNewFile(fileName);
+        try {
+            FileUtils.createNewFile(fileName);
+        } catch (IOException e) {
+            System.out.println("Error with file path");
+            System.exit(-1);   // exit closes application
+        }
     }
 
     // Constructor with non-empty list

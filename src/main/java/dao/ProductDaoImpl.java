@@ -16,18 +16,11 @@ public class ProductDaoImpl implements ProductDao {
     private String productType;
 
 
-    public ProductDaoImpl(FileUtils.enumProductType productType) throws IOException {
+    public ProductDaoImpl(FileUtils.enumProductType productType) {
         setProductParameters(productType);
     }
 
-    public ProductDaoImpl(String fileName) throws IOException {
-        this.fileName = fileName;
-        this.productType = "PRODUCT";
-        FileUtils.createNewFile(fileName);
-
-    }
-
-    public void setProductParameters(FileUtils.enumProductType productType) throws IOException {
+    public void setProductParameters(FileUtils.enumProductType productType) {
         switch (productType) {
             case BOOTS:
                 this.fileName = "boots.txt";
@@ -43,23 +36,14 @@ public class ProductDaoImpl implements ProductDao {
                 this.productType = "PRODUCT";
                 break;
         }
-        FileUtils.createNewFile(fileName);
-    }
 
-    // Constructor with empty list
-    public ProductDaoImpl(String fileName, String productType) throws IOException {
-        this.fileName = fileName;
-        this.productType = productType;
-        FileUtils.createNewFile(fileName);
+        try {
+            FileUtils.createNewFile(fileName);
+        } catch (IOException e) {
+            System.out.println("Error with file path");
+            System.exit(-1);   // exit closes application
+        }
     }
-    // Constructor with non-empty list
-    public ProductDaoImpl(String fileName, String productType, List<Product> products) throws IOException {
-        this.fileName = fileName;
-        this.productType = productType;
-        FileUtils.createNewFile(fileName);
-
-        this.saveProducts(products);
-     }
 
     public List<Product> getAllProducts() throws IOException {
         FileReader fileReader = new FileReader(this.fileName);
@@ -101,19 +85,17 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     //Save products means erase existing file contents
-    public void saveProducts(List<Product> products) throws FileNotFoundException {
-        PrintWriter printWriter = null;
+    public void saveProducts(List<Product> products) {
 
-        FileUtils.clearFile(fileName);
         try {
-            printWriter = new PrintWriter(new FileOutputStream(this.fileName, true));
+            FileUtils.clearFile(fileName);
+            PrintWriter printWriter = new PrintWriter(new FileOutputStream(this.fileName, true));
             for (Product product : products) {
                 printWriter.write(product.toString() + "\n");
             }
+            printWriter.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            printWriter.close();
         }
     }
 
