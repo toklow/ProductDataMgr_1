@@ -14,5 +14,5 @@ public interface UserDao {
     User getUserByLogin(String login) throws IOException, UserNotFoundException;
     User getUserById(Long userId) throws IOException, UserNotFoundException;
     void removeUserByLogin(String login);
-    void removeUserById(Long id);
+    void removeUserById(Long id) throws IOException;
 }

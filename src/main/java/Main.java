@@ -1,58 +1,75 @@
-import dao.ProductDaoImpl;
-import dao.UserDaoImpl;
 import entity.Boots;
 import entity.Cloth;
+import entity.Product;
 import entity.User;
-import exception.*;
-import iface.ProductDao;
+import exception.NumberNotFoundException;
+import exception.UserNotFoundException;
 import iface.UserDao;
-import utils.UserValidator;
+import service.ProductServiceImpl;
+import service.UserServiceImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static utils.ExceptionsLearning.isFoundNumber;
+import static utils.FileUtils.enumProductType.*;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        Cloth cloth = new Cloth(1L, "T-shirt", 35.9f, 0.3f, "Black", 10f,"XL", "Cotton");
-        Boots boots = new Boots(1L, "High heels", 99.9f, .5f, "Red", 12f, 35, true);
-
-        ProductDao productClothDao = new ProductDaoImpl("clothes.txt", "CLOTH");
-        productClothDao.saveProduct(cloth);
-
-        ProductDao productBootsDao = new ProductDaoImpl("boots.txt", "BOOTS");
-        productBootsDao.saveProduct(boots);
-
 
         List<User> users = new ArrayList<>();
         users.add(new User(1L, "admin", "adminpass"));
         users.add(new User(2L,"pablo", "pablopass"));
         users.add(new User(3L,"tokr", "tokrpass"));
 
-        UserDao userDao = new UserDaoImpl("users.txt");
-        userDao.saveUsers(users);
-
-
-        // For exceptions learning purposes
-        User user = new User(100L, "ktoklowicz", "mojehaslo");
-        if  (isUserValid(user) == true) {
-            users.add(user);
-            userDao.saveUser(user);
+        UserServiceImpl userService = UserServiceImpl.getInstance();
+        for (User user : users) {
+            userService.addUser(user);
         }
-        // For exceptions learning purposes
-        user = new User(100L, "ktoklowicz", "mojehaslo");
-        if  (isUserValid(user) == true) {
-            users.add(user);
-            userDao.saveUser(user);
-        }
-        // boolean isException = isNumberNotFoundException(10);
-        // isException = isUserNotFound(userDao,7L);
-        // isException = isUserNotFound(userDao,"pabloP");
 
+        List<User> usersFromFile = userService.getAllUsers();
+        User user =  users.get(1);
+        userService.removeUserById(user.getId());
+        usersFromFile = userService.getAllUsers();
+
+
+        List<Product> products = new ArrayList<>();
+        products.add(new Product(100L, "Marvel", 200.75, 10.0, "Brown", 100.0));
+        products.add(new Product(200L, "Shirt", 300.0, 0.4, "White", 5.0));
+        products.add(new Product(210L, "Coat", 300.0, 0.4, "White", 0.0));
+        products.add(new Product(300L, "Sneakers", 750.0, 0.8, "Brown", 15.0));
+
+        ProductServiceImpl productService = ProductServiceImpl.getInstance(PRODUCT);
+        productService.saveProducts(products);
+        Integer count = productService.getCountProducts();
+        boolean isProductOnStock = productService.isProductOnStockByName("Shirt");
+        List<Product> productsFromFIle = productService.getAllProducts();
+
+
+        List<Product> clothes = new ArrayList<>();
+        clothes.add(new Cloth(1L, "T-shirt", 35.9f, 0.3f, "Black", 10f,"XL", "Cotton"));
+        clothes.add(new Cloth(2L, "Pants", 48f, 0.7f, "Green", 23f,"L", "Cotton"));
+        productService = ProductServiceImpl.getInstance(CLOTH);
+        productService.saveProducts(clothes);
+        count = productService.getCountProducts();
+        isProductOnStock = productService.isProductOnStockByName("Shirt");
+        isProductOnStock = productService.isProductOnStockByName("Pants");
+        productsFromFIle = productService.getAllProducts();
+
+        List<Product> boots = new ArrayList<>();
+        boots.add(new Boots(1L, "High heels", 99.9f, .5f, "Red", 12f, 35, true));
+        boots.add(new Boots(2L, "Sneakers", 99.9f, .5f, "Blue", 12f, 43, false));
+        productService = ProductServiceImpl.getInstance(BOOTS);
+        productService.saveProducts(boots);
+        count = productService.getCountProducts();
+        isProductOnStock = productService.isProductOnStockByName("Shirt");
+        isProductOnStock = productService.isProductOnStockByName("Sneakers");
+        productsFromFIle = productService.getAllProducts();
     }
+
+
 
     // For exceptions learning purposes
     private static boolean isNumberNotFoundException(int element) {
@@ -98,18 +115,4 @@ public class Main {
         } finally {return isException;}
     }
 
-    private static boolean isUserValid (User user)
-    {
-        UserValidator userValidator = UserValidator.getInstance();
-        boolean rslt = false;
-        try {
-            rslt = userValidator.isValidate(user);
-        } catch (UserShortLengthLoginException e) {
-            e.printStackTrace();
-        } catch (UserShortLengthPasswordException e) {
-            e.printStackTrace();
-        } catch (UserLoginAlreadyExistException e) {
-            e.printStackTrace();
-        } finally { return rslt;}
-    }
 }

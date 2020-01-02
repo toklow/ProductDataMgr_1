@@ -1,78 +1,73 @@
 package service;
 
+import dao.ProductDaoImpl;
 import entity.Product;
 import iface.ProductService;
+import utils.FileUtils;
 
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService  {
 
-    private List<Product> products;
+    private static FileUtils.enumProductType productType;
+    private static ProductServiceImpl instance = null;
+    private static ProductDaoImpl productDao = null;
 
-    // Constructor with empty list
-    public ProductServiceImpl() {
-        this.products = new ArrayList<Product>();
+    private ProductServiceImpl(FileUtils.enumProductType productType) throws IOException {
+        ProductServiceImpl.productType = productType;
+        productDao = new ProductDaoImpl(productType);
     }
 
-    // Constructor with non-empty list
-    public ProductServiceImpl(List<Product> products) {
-        this.products = new ArrayList<Product>(products);
+
+    public static ProductServiceImpl getInstance(FileUtils.enumProductType productType) throws IOException {
+        if (instance == null) {
+            instance = new ProductServiceImpl(productType);
+        }
+        if (ProductServiceImpl.productType != productType) {
+            productDao.setProductParameters(productType);
+        }
+        return instance;
     }
 
-    public List<Product> getAllProducts() {
-        return this.products;
+
+    public List<Product> getAllProducts() throws IOException {
+        return productDao.getAllProducts();
     }
 
-    public Integer getCountProducts() { return 0;}
+    public Integer getCountProducts() throws IOException {
+        return productDao.getAllProducts().size();
+    }
 
     // It may happen that we have 2 products with the same name, so function should return a list of found products
-    public Product getProductByName(String productName) {
-
-        if (this.products.isEmpty()) { return null; }
-
-        for (Product product : this.products) {
-            if (product.getProductName().equals(productName)) {
-                return product;
-            }
-        }
-        return null;
+    public Product getProductByName(String productName) throws IOException {
+        return productDao.getProductByProductName(productName);
     }
 
-    public boolean isProductOnStockByName(String productName) {
-        for (Product product : this.products)
-        {
-            // It may happen that we have 2 products with the same name.
-            // That's why the loop should be interrupted if we found the product and the stock is not empty for it
-            if (product.getProductName().equals(productName) && product.getProductCount() > 0.0)
-            {
-               return true;
-            }
-        }
+    public boolean isProductOnStockByName(String productName) throws IOException {
+        Product product = productDao.getProductByProductName(productName);
+        if (product == null) {return false;}
+        if (product.getProductCount() > 0) {return true;}
         return false;
     }
 
-    public boolean doesProductExistByName(String productName) {
-        for (Product product : this.products)
-        {
-            if (product.getProductName().equals(productName))
-            {
-                return true;
-            }
+    public boolean doesProductExistByName(String productName) throws IOException {
+        if (productDao.getProductByProductName(productName) == null) {
+            return false;
         }
-        return false;
+        return true;
     }
 
-    public boolean doesProductExistById(Long productId)
-    {
-        for (Product product : this.products)
-        {
-            if (product.getId().equals(productId))
-            {
-                return true;
-            }
+    public boolean doesProductExistById(Long productId) throws IOException {
+        if (productDao.getProductById(productId) == null) {
+            return false;
         }
-        return false;
+        return true;
+    }
+
+    public void saveProducts(List<Product> products) throws FileNotFoundException {
+        productDao.saveProducts(products);
     }
 
 }

@@ -5,18 +5,21 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import service.ProductServiceImpl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static utils.FileUtils.enumProductType.PRODUCT;
 
 public class ProductServiceTest {
 
     @Test
-    public void testGetAllProducts() {
+    public void testGetAllProducts() throws IOException {
         //is
         List<Product> products = createProductsForTests();
 
         //then
-        ProductServiceImpl productService = new ProductServiceImpl(products);
+        ProductServiceImpl productService = ProductServiceImpl.getInstance(PRODUCT);
         List<Product> productsFromTestClass = productService.getAllProducts();
 
         //expected
@@ -24,19 +27,19 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testGetAllProductsNegative() {
+    public void testGetAllProductsNegative() throws IOException {
         //is
         List<Product> products = createProductsForTests();
 
         //then
-        ProductServiceImpl productService = new ProductServiceImpl(products);
+        ProductServiceImpl productService = ProductServiceImpl.getInstance(PRODUCT);
         List<Product> productsFromTestClass = productService.getAllProducts();
         products.remove(1);
 
         //expected
         Assertions.assertNotEquals(products, productsFromTestClass);
     }
-
+/*
     @Test
     public void testGetProductByName() {
         //is
@@ -153,13 +156,16 @@ public class ProductServiceTest {
         //expected
         Assertions.assertFalse(doesProductExist);
     }
-
-    private List<Product> createProductsForTests () {
+*/
+    private List<Product> createProductsForTests () throws IOException {
         List<Product> products = new ArrayList<Product>();
         products.add(new Product(100L, "Marvel", 200.75, 10.0, "Brown", 100.0));
         products.add(new Product(200L, "Shirt", 300.0, 0.4, "White", 5.0));
         products.add(new Product(210L, "Coat", 300.0, 0.4, "White", 0.0));
         products.add(new Product(300L, "Sneakers", 750.0, 0.8, "Brown", 15.0));
+
+        ProductServiceImpl productService = ProductServiceImpl.getInstance(PRODUCT);
+        productService.saveProducts(products);
 
         return products;
     }

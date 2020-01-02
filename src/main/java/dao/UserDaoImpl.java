@@ -82,8 +82,15 @@ public class UserDaoImpl implements UserDao {
 
     }
 
-    public void removeUserById(Long id) {
-
+    public void removeUserById(Long id) throws IOException {
+        List<User> users = getAllUsers();
+        for (User user : users) {
+            if (user.getId().compareTo(id) == 0) {
+                users.remove(user);
+                saveUsers(users);
+                break;
+            }
+        }
     }
 
 }

@@ -1,4 +1,0 @@
-1#admin#adminpass
-2#pablo#pablopass
-3#tokr#tokrpass
-100#ktoklowicz#mojehaslo

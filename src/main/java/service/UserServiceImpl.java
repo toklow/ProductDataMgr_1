@@ -3,6 +3,7 @@ package service;
 import dao.UserDaoImpl;
 import entity.User;
 import exception.UserLoginAlreadyExistException;
+import exception.UserNotFoundException;
 import exception.UserShortLengthLoginException;
 import exception.UserShortLengthPasswordException;
 import iface.UserDao;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
-    private final static String USER_FILE_NAME = "Users.txt";
+    private final static String USER_FILE_NAME = "users.txt";
     private static UserServiceImpl instance = null;
     private static UserDao userDao = null;
 
@@ -44,7 +45,13 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         } catch (UserLoginAlreadyExistException e) {
             e.printStackTrace();
-        } finally { return rslt;}
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return rslt;
     }
 
     public List<User> getAllUsers() throws IOException {
@@ -57,7 +64,7 @@ public class UserServiceImpl implements UserService {
         }
       }
 
-    public void removeUserById(Long id) {
+    public void removeUserById(Long id) throws IOException {
         userDao.removeUserById(id);
     }
 

@@ -15,10 +15,34 @@ public class ProductDaoImpl implements ProductDao {
     private String fileName;
     private String productType;
 
-    // Constructor with empty list
+
+    public ProductDaoImpl(FileUtils.enumProductType productType) throws IOException {
+        setProductParameters(productType);
+    }
+
     public ProductDaoImpl(String fileName) throws IOException {
         this.fileName = fileName;
         this.productType = "PRODUCT";
+        FileUtils.createNewFile(fileName);
+
+    }
+
+    public void setProductParameters(FileUtils.enumProductType productType) throws IOException {
+        switch (productType) {
+            case BOOTS:
+                this.fileName = "boots.txt";
+                this.productType = "BOOTS";
+                break;
+            case CLOTH:
+                this.fileName = "clothes.txt";
+                this.productType = "CLOTH";
+                break;
+            case PRODUCT:
+            default:
+                this.fileName = "products.txt";
+                this.productType = "PRODUCT";
+                break;
+        }
         FileUtils.createNewFile(fileName);
     }
 
