@@ -1,5 +1,7 @@
 package entity;
 
+import static utils.FileUtils.enumProductType.BOOTS;
+
 public class Boots extends Product {
 
     private Integer size;
@@ -7,7 +9,7 @@ public class Boots extends Product {
 
     public Boots(Long id, String productName, double price, double weight, String color, double productCount, Integer size, boolean isNaturalSkin)  {
 
-        super(id, productName, price, weight, color, productCount);
+        super(BOOTS, id, productName, price, weight, color, productCount);
 
         this.size = size;
         this.isNaturalSkin = isNaturalSkin;

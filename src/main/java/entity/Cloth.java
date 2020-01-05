@@ -2,6 +2,8 @@ package entity;
 
 import java.util.Objects;
 
+import static utils.FileUtils.enumProductType.CLOTH;
+
 public class Cloth extends Product {
 
     private String size;
@@ -9,7 +11,7 @@ public class Cloth extends Product {
 
     public Cloth(Long id, String productName, double price, double weight, String color, double productCount, String size, String material) {
 
-        super(id, productName, price, weight, color, productCount);
+        super(CLOTH, id, productName, price, weight, color, productCount);
 
         this.size = size;
         this.material = material;

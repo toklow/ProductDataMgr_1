@@ -5,7 +5,6 @@ import entity.Product;
 import iface.ProductService;
 import utils.FileUtils;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,13 +14,13 @@ public class ProductServiceImpl implements ProductService  {
     private static ProductServiceImpl instance = null;
     private static ProductDaoImpl productDao = null;
 
-    private ProductServiceImpl(FileUtils.enumProductType productType) throws IOException {
+    private ProductServiceImpl(FileUtils.enumProductType productType) {
         ProductServiceImpl.productType = productType;
         productDao = new ProductDaoImpl(productType);
     }
 
 
-    public static ProductServiceImpl getInstance(FileUtils.enumProductType productType) throws IOException {
+    public static ProductServiceImpl getInstance(FileUtils.enumProductType productType) {
         if (instance == null) {
             instance = new ProductServiceImpl(productType);
         }
@@ -52,21 +51,21 @@ public class ProductServiceImpl implements ProductService  {
         return false;
     }
 
-    public boolean doesProductExistByName(String productName) throws IOException {
+    public boolean isProductExist(String productName) throws IOException {
         if (productDao.getProductByProductName(productName) == null) {
             return false;
         }
         return true;
     }
 
-    public boolean doesProductExistById(Long productId) throws IOException {
+    public boolean isProductExist(Long productId) throws IOException {
         if (productDao.getProductById(productId) == null) {
             return false;
         }
         return true;
     }
 
-    public void saveProducts(List<Product> products) throws FileNotFoundException {
+    public void saveProducts(List<Product> products) {
         productDao.saveProducts(products);
     }
 

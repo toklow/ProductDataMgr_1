@@ -13,7 +13,6 @@ import static entity.parser.ProductParser.stringToProduct;
 public class ProductDaoImpl implements ProductDao {
 
     private String fileName;
-    private String productType;
 
 
     public ProductDaoImpl(FileUtils.enumProductType productType) {
@@ -24,16 +23,13 @@ public class ProductDaoImpl implements ProductDao {
         switch (productType) {
             case BOOTS:
                 this.fileName = "boots.txt";
-                this.productType = "BOOTS";
                 break;
             case CLOTH:
                 this.fileName = "clothes.txt";
-                this.productType = "CLOTH";
                 break;
             case PRODUCT:
             default:
                 this.fileName = "products.txt";
-                this.productType = "PRODUCT";
                 break;
         }
 
@@ -52,7 +48,7 @@ public class ProductDaoImpl implements ProductDao {
         String singleLineFromFile;
 
         while ((singleLineFromFile = reader.readLine()) != null) {
-            products.add(stringToProduct(singleLineFromFile, this.productType));
+            products.add(stringToProduct(singleLineFromFile));
         }
         return products;
     }
