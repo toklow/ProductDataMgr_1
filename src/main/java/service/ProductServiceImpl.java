@@ -2,10 +2,15 @@ package service;
 
 import dao.ProductDaoImpl;
 import entity.Product;
+import exception.ProductCountNegativeException;
+import exception.ProductNameEmptyException;
+import exception.ProductPriceNoPositiveException;
+import exception.ProductWeightNoPositiveException;
 import iface.ProductService;
 import utils.FileUtils;
+import utils.ProductValidator;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService  {
@@ -30,35 +35,44 @@ public class ProductServiceImpl implements ProductService  {
         return instance;
     }
 
+    private static boolean isProductValid (Product product)
+    {
+        ProductValidator productValidator = ProductValidator.getInstance();
 
-    public List<Product> getAllProducts() throws IOException {
+        try { return productValidator.isValidate(product); }
+        catch (ProductCountNegativeException | ProductNameEmptyException | ProductPriceNoPositiveException | ProductWeightNoPositiveException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }   
+
+    public List<Product> getAllProducts() {
         return productDao.getAllProducts();
     }
 
-    public Integer getCountProducts() throws IOException {
+    public Integer getCountProducts() {
         return productDao.getAllProducts().size();
     }
 
-    // It may happen that we have 2 products with the same name, so function should return a list of found products
-    public Product getProductByName(String productName) throws IOException {
+    public Product getProductByName(String productName) {
         return productDao.getProductByProductName(productName);
     }
 
-    public boolean isProductOnStockByName(String productName) throws IOException {
+    public boolean isProductOnStockByName(String productName) {
         Product product = productDao.getProductByProductName(productName);
         if (product == null) {return false;}
         if (product.getProductCount() > 0) {return true;}
         return false;
     }
 
-    public boolean isProductExist(String productName) throws IOException {
+    public boolean isProductExist(String productName) {
         if (productDao.getProductByProductName(productName) == null) {
             return false;
         }
         return true;
     }
 
-    public boolean isProductExist(Long productId) throws IOException {
+    public boolean isProductExist(Long productId) {
         if (productDao.getProductById(productId) == null) {
             return false;
         }
@@ -66,7 +80,21 @@ public class ProductServiceImpl implements ProductService  {
     }
 
     public void saveProducts(List<Product> products) {
-        productDao.saveProducts(products);
+        List<Product> productsChecked = new ArrayList<>();
+        for (Product product : products) {
+            if (isProductValid(product)) {
+                productsChecked.add(product);
+            }
+        }
+        if (!productsChecked.isEmpty()) {
+            productDao.saveProducts(productsChecked);
+        }
+    }
+
+    public void saveProduct(Product product) {
+        if (isProductValid(product)) {
+            productDao.saveProduct(product);
+        }
     }
 
 }

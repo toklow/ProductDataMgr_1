@@ -41,19 +41,26 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
-    public List<Product> getAllProducts() throws IOException {
-        FileReader fileReader = new FileReader(this.fileName);
-        BufferedReader reader = new BufferedReader(fileReader);
-        List<Product> products = new ArrayList<>();
-        String singleLineFromFile;
+    public List<Product> getAllProducts() {
 
-        while ((singleLineFromFile = reader.readLine()) != null) {
-            products.add(stringToProduct(singleLineFromFile));
+        try {
+            FileReader fileReader = new FileReader(this.fileName);
+            BufferedReader reader = new BufferedReader(fileReader);
+            List<Product> products = new ArrayList<>();
+            String singleLineFromFile;
+
+            while ((singleLineFromFile = reader.readLine()) != null) {
+                products.add(stringToProduct(singleLineFromFile));
+            }
+            return products;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
-        return products;
     }
 
-    public Product getProductById(Long productId) throws IOException {
+    public Product getProductById(Long productId) {
         List<Product> products = getAllProducts();
         for (Product product : products) {
             if (product.getId().compareTo(productId) == 0) {
@@ -63,7 +70,7 @@ public class ProductDaoImpl implements ProductDao {
         return null;
     }
 
-    public Product getProductByProductName(String productName) throws IOException {
+    public Product getProductByProductName(String productName) {
         List<Product> products = getAllProducts();
         for (Product product : products) {
             if (product.getProductName().compareTo(productName) == 0) {
@@ -74,7 +81,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     // Save on product means add product to the existing products (avoid erasing existing file by PrintWriter)
-    public void saveProduct(Product product) throws IOException {
+    public void saveProduct(Product product) {
         List<Product> products = getAllProducts();
         products.add(product);
         saveProducts(products);
@@ -95,7 +102,7 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
-    public void removeProductById(Long productId) throws IOException {
+    public void removeProductById(Long productId) {
         List<Product> products = getAllProducts();
         for (Product product : products) {
             if (product.getId().compareTo(productId) == 0) {
@@ -106,7 +113,7 @@ public class ProductDaoImpl implements ProductDao {
         }
      }
 
-    public void removeProductByName(String productName) throws IOException {
+    public void removeProductByName(String productName) {
         List<Product> products = getAllProducts();
         for (Product product : products) {
             if (product.getProductName().compareTo(productName) == 0) {

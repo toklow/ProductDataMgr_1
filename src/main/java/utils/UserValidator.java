@@ -26,34 +26,32 @@ public class UserValidator {
             return instance;
         }
 
-    public boolean isValidate(User user) throws UserLoginAlreadyExistException, UserShortLengthLoginException, UserShortLengthPasswordException, IOException, UserNotFoundException {
+    public boolean isValidate(User user) throws UserLoginAlreadyExistException, UserShortLengthLoginException, UserShortLengthPasswordException {
 
-        if (isUserByLoginExist(user.getLogin()) == true) {
+        if (isUserByLoginExist(user.getLogin())) {
             throw new UserLoginAlreadyExistException("User with login: " + user.getLogin() + " already exists");
         }
 
-        if (hasLoginMinLength(user.getLogin()) == false) {
+        if (!hasLoginMinLength(user.getLogin())) {
             throw new UserShortLengthLoginException("User login: " + user.getLogin() + " to short. Minimum length: " + LOGIN_MIN_LENGTH);
         }
 
-        if (hasPasswordMinLength(user.getPassword()) == false) {
-            throw new UserShortLengthLoginException( "To short User password. Minimum length: " + PASSWORD_MIN_LENGTH);
+        if (!hasPasswordMinLength(user.getPassword())) {
+            throw new UserShortLengthPasswordException( "To short User password. Minimum length: " + PASSWORD_MIN_LENGTH);
         }
         return true;
     }
 
-    private boolean isUserByLoginExist (String login) throws IOException, UserNotFoundException {
+    private boolean isUserByLoginExist (String login) {
         UserDao userDao = new UserDaoImpl("users.txt");
-        boolean is = false;
 
         try {
             User user = userDao.getUserByLogin(login);
-            is = true;
+            return true;
         }
-        catch (UserNotFoundException e) {
-            is = false;
-        } finally {return is;}
-
+        catch (UserNotFoundException | IOException e) {
+            return false;
+        }
     }
 
     private boolean hasLoginMinLength(String login) {

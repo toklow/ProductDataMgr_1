@@ -2,7 +2,6 @@ import entity.Boots;
 import entity.Cloth;
 import entity.Product;
 import entity.User;
-import exception.NumberNotFoundException;
 import exception.UserNotFoundException;
 import iface.UserDao;
 import service.ProductServiceImpl;
@@ -12,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static utils.ExceptionsLearning.isFoundNumber;
 import static utils.FileUtils.enumProductType.*;
 
 public class Main {
@@ -39,6 +37,11 @@ public class Main {
         products.add(new Product(100L, "Marvel", 200.75, 10.0, "Brown", 100.0));
         products.add(new Product(200L, "Shirt", 300.0, 0.4, "White", 5.0));
         products.add(new Product(210L, "Coat", 300.0, 0.4, "White", 0.0));
+        products.add(new Product(221L, "Socks - Negative count", 300.0, 0.4, "White", -5.0));
+        products.add(new Product(222L, "", 300.0, 0.4, "White", 5.0));
+        products.add(new Product(223L, "Socks - Price 0", 0.0, 0.4, "White", 5.0));
+        products.add(new Product(224L, "Socks - Negative weight", 300.0, -0.4, "White", 5.0));
+        products.add(new Product(225L, "Socks - OK", 300.0, 0.4, "White", 5.0));
         products.add(new Product(300L, "Sneakers", 750.0, 0.8, "Brown", 15.0));
 
         ProductServiceImpl productService = ProductServiceImpl.getInstance(PRODUCT);
@@ -70,49 +73,29 @@ public class Main {
     }
 
 
-
     // For exceptions learning purposes
-    private static boolean isNumberNotFoundException(int element) {
-        int [] numbers = {1, 5, 3, 4, 9, 0};
-        boolean isException = false;
-
+    private static boolean isUserNotFound(UserDao userDao, long Id) {
         try {
-            isException = !isFoundNumber(numbers, element);
-            System.out.println("Number found: " + isFoundNumber(numbers, element));
-        } catch (NumberNotFoundException e) {
+            User user = userDao.getUserById(Id);
+            System.out.println("User found: " + user.getId() + " " + user.getLogin());
+            return false;
+        } catch (UserNotFoundException | IOException e) {
             e.printStackTrace();
-            isException = true;
-        } finally {
-            return isException;
+            return true;
         }
     }
 
 
     // For exceptions learning purposes
-    private static boolean isUserNotFound(UserDao userDao, long Id) {
-        boolean isException = false;
-
-        try {
-            User user = userDao.getUserById(Id);
-            System.out.println("User found: " + user.getId() + " " + user.getLogin());
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-            isException = true;
-        } finally {return isException;}
-    }
-
-
-    // For exceptions learning purposes
     private static boolean isUserNotFound(UserDao userDao, String userName) {
-        boolean isException = false;
-
         try {
             User user = userDao.getUserByLogin(userName);
             System.out.println("User found: " + user.getId() + " " + user.getLogin());
-        } catch (UserNotFoundException e) {
+            return false;
+        } catch (UserNotFoundException | IOException e) {
             e.printStackTrace();
-            isException = true;
-        } finally {return isException;}
+            return true;
+        }
     }
 
 }

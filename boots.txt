@@ -1,2 +1,2 @@
-1#High heels#99.9000015258789#0.5#Red#12.0#35#true
-2#Sneakers#99.9000015258789#0.5#Blue#12.0#43#false
+PRODUCT#1#High heels#99.9000015258789#0.5#Red#12.0#35#true
+PRODUCT#2#Sneakers#99.9000015258789#0.5#Blue#12.0#43#false

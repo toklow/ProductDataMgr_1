@@ -3,7 +3,6 @@ package service;
 import dao.UserDaoImpl;
 import entity.User;
 import exception.UserLoginAlreadyExistException;
-import exception.UserNotFoundException;
 import exception.UserShortLengthLoginException;
 import exception.UserShortLengthPasswordException;
 import iface.UserDao;
@@ -20,13 +19,11 @@ public class UserServiceImpl implements UserService {
     private static UserDao userDao = null;
 
 
-    // Constructor with empty list
-    private UserServiceImpl() throws IOException {
+    private UserServiceImpl() {
         userDao = new UserDaoImpl(USER_FILE_NAME);
     }
 
-
-    public static UserServiceImpl getInstance() throws IOException {
+    public static UserServiceImpl getInstance() {
         if (instance == null) {
             instance = new UserServiceImpl();
         }
@@ -36,22 +33,12 @@ public class UserServiceImpl implements UserService {
     private static boolean isUserValid (User user)
     {
         UserValidator userValidator = UserValidator.getInstance();
-        boolean rslt = false;
-        try {
-            rslt = userValidator.isValidate(user);
-        } catch (UserShortLengthLoginException e) {
+
+        try { return userValidator.isValidate(user); }
+        catch (UserShortLengthLoginException | UserShortLengthPasswordException | UserLoginAlreadyExistException e) {
             e.printStackTrace();
-        } catch (UserShortLengthPasswordException e) {
-            e.printStackTrace();
-        } catch (UserLoginAlreadyExistException e) {
-            e.printStackTrace();
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
+            return false;
         }
-        return rslt;
     }
 
     public List<User> getAllUsers() throws IOException {
