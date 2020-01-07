@@ -1,8 +1,8 @@
 package entity;
 
-import java.util.Objects;
+import enums.enumProductType;
 
-import static utils.FileUtils.enumProductType.CLOTH;
+import java.util.Objects;
 
 public class Cloth extends Product {
 
@@ -11,7 +11,7 @@ public class Cloth extends Product {
 
     public Cloth(Long id, String productName, double price, double weight, String color, double productCount, String size, String material) {
 
-        super(CLOTH, id, productName, price, weight, color, productCount);
+        super(enumProductType.CLOTH, id, productName, price, weight, color, productCount);
 
         this.size = size;
         this.material = material;

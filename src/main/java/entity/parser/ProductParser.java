@@ -3,15 +3,19 @@ package entity.parser;
 import entity.Boots;
 import entity.Cloth;
 import entity.Product;
+import enums.enumProductType;
 import utils.FileUtils;
 
-import static utils.FileUtils.enumProductType.*;
+import java.util.EnumSet;
+
+import static enums.enumProductType.PRODUCT;
+
 
 public class ProductParser {
 
     public static Product stringToProduct(String productStr) {
         Product product = null;
-        FileUtils.enumProductType productType = parseProductType(productStr);
+        enumProductType productType = parseProductType(productStr);
 
         switch (productType) {
             case PRODUCT:
@@ -29,10 +33,18 @@ public class ProductParser {
         return product;
     }
 
-    private static FileUtils.enumProductType parseProductType(String productStr) {
+    private static enumProductType parseProductType(String productStr) {
+        EnumSet<enumProductType> productTypes =  EnumSet.allOf(enumProductType.class);
         String [] productInformation = productStr.split(Product.PRODUCT_SEPARATOR);
-        FileUtils.enumProductType productType;
 
+        for (enumProductType productType : productTypes) {
+            if (productType.name().equals(productInformation[0])) {
+                return productType;
+            }
+        }
+
+        return PRODUCT;
+/*
         switch (productInformation[0]) {
             case "BOOTS":
                 productType = BOOTS;
@@ -46,6 +58,8 @@ public class ProductParser {
                 break;
         }
         return productType;
+
+ */
     }
 
 

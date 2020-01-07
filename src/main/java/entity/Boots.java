@@ -1,6 +1,6 @@
 package entity;
 
-import static utils.FileUtils.enumProductType.BOOTS;
+import static enums.enumProductType.BOOTS;
 
 public class Boots extends Product {
 

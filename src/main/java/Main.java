@@ -2,6 +2,7 @@ import entity.Boots;
 import entity.Cloth;
 import entity.Product;
 import entity.User;
+import enums.enumProductType;
 import exception.UserNotFoundException;
 import iface.UserDao;
 import service.ProductServiceImpl;
@@ -10,8 +11,6 @@ import service.UserServiceImpl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static utils.FileUtils.enumProductType.*;
 
 public class Main {
 
@@ -44,7 +43,7 @@ public class Main {
         products.add(new Product(225L, "Socks - OK", 300.0, 0.4, "White", 5.0));
         products.add(new Product(300L, "Sneakers", 750.0, 0.8, "Brown", 15.0));
 
-        ProductServiceImpl productService = ProductServiceImpl.getInstance(PRODUCT);
+        ProductServiceImpl productService = ProductServiceImpl.getInstance(enumProductType.PRODUCT);
         productService.saveProducts(products);
         Integer count = productService.getCountProducts();
         boolean isProductOnStock = productService.isProductOnStockByName("Shirt");
@@ -54,7 +53,7 @@ public class Main {
         List<Product> clothes = new ArrayList<>();
         clothes.add(new Cloth(1L, "T-shirt", 35.9f, 0.3f, "Black", 10f,"XL", "Cotton"));
         clothes.add(new Cloth(2L, "Pants", 48f, 0.7f, "Green", 23f,"L", "Cotton"));
-        productService = ProductServiceImpl.getInstance(CLOTH);
+        productService = ProductServiceImpl.getInstance(enumProductType.CLOTH);
         productService.saveProducts(clothes);
         count = productService.getCountProducts();
         isProductOnStock = productService.isProductOnStockByName("Shirt");
@@ -64,7 +63,7 @@ public class Main {
         List<Product> boots = new ArrayList<>();
         boots.add(new Boots(1L, "High heels", 99.9f, .5f, "Red", 12f, 35, true));
         boots.add(new Boots(2L, "Sneakers", 99.9f, .5f, "Blue", 12f, 43, false));
-        productService = ProductServiceImpl.getInstance(BOOTS);
+        productService = ProductServiceImpl.getInstance(enumProductType.BOOTS);
         productService.saveProducts(boots);
         count = productService.getCountProducts();
         isProductOnStock = productService.isProductOnStockByName("Shirt");

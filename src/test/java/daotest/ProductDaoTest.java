@@ -2,6 +2,7 @@ package daotest;
 
 import dao.ProductDaoImpl;
 import entity.Product;
+import enums.enumProductType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static utils.FileUtils.enumProductType.PRODUCT;
 
 
 public class ProductDaoTest {
@@ -17,11 +17,11 @@ public class ProductDaoTest {
     private final String daoFileName = "Products.txt";
 
     @Test
-    public void testGetAllProducts() throws IOException {
+    public void testGetAllProducts() {
         //is - File contents
 
         //then
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(PRODUCT);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(enumProductType.PRODUCT);
         List<Product> productsFromFile = productDaoImpl.getAllProducts();
 
         //expected
@@ -30,12 +30,12 @@ public class ProductDaoTest {
 
 
     @Test
-    public void testSaveProducts() throws IOException {
+    public void testSaveProducts() {
         //is
         List<Product> products = createProductsForTests();
 
         //then
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(PRODUCT);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(enumProductType.PRODUCT);
         productDaoImpl.saveProducts(products);
         List<Product> productsFromFile = productDaoImpl.getAllProducts();
 
@@ -44,12 +44,12 @@ public class ProductDaoTest {
     }
 
     @Test
-    public void testSaveProduct() throws IOException {
+    public void testSaveProduct() {
         //is
         Product product = createProductForTests();
 
         //then
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(PRODUCT);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(enumProductType.PRODUCT);
         productDaoImpl.saveProduct(product);
         Product productFromFile = productDaoImpl.getProductById(product.getId());
 
@@ -58,9 +58,9 @@ public class ProductDaoTest {
     }
 
     @Test
-    public void testRemoveProductById() throws IOException {
+    public void testRemoveProductById() {
         //is - File contents
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(PRODUCT);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(enumProductType.PRODUCT);
         List<Product> products = productDaoImpl.getAllProducts();
         Long productId = products.get(1).getId();
 

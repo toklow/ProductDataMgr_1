@@ -1,6 +1,7 @@
 package servicetest;
 
 import entity.Product;
+import enums.enumProductType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import service.ProductServiceImpl;
@@ -9,17 +10,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static utils.FileUtils.enumProductType.PRODUCT;
-
 public class ProductServiceTest {
 
     @Test
-    public void testGetAllProducts() throws IOException {
+    public void testGetAllProducts() {
         //is
         List<Product> products = createProductsForTests();
 
         //then
-        ProductServiceImpl productService = ProductServiceImpl.getInstance(PRODUCT);
+        ProductServiceImpl productService = ProductServiceImpl.getInstance(enumProductType.PRODUCT);
         List<Product> productsFromTestClass = productService.getAllProducts();
 
         //expected
@@ -27,12 +26,12 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testGetAllProductsNegative() throws IOException {
+    public void testGetAllProductsNegative() {
         //is
         List<Product> products = createProductsForTests();
 
         //then
-        ProductServiceImpl productService = ProductServiceImpl.getInstance(PRODUCT);
+        ProductServiceImpl productService = ProductServiceImpl.getInstance(enumProductType.PRODUCT);
         List<Product> productsFromTestClass = productService.getAllProducts();
         products.remove(1);
 
@@ -157,14 +156,14 @@ public class ProductServiceTest {
         Assertions.assertFalse(doesProductExist);
     }
 */
-    private List<Product> createProductsForTests () throws IOException {
-        List<Product> products = new ArrayList<Product>();
+    private List<Product> createProductsForTests () {
+        List<Product> products = new ArrayList<>();
         products.add(new Product(100L, "Marvel", 200.75, 10.0, "Brown", 100.0));
         products.add(new Product(200L, "Shirt", 300.0, 0.4, "White", 5.0));
         products.add(new Product(210L, "Coat", 300.0, 0.4, "White", 0.0));
         products.add(new Product(300L, "Sneakers", 750.0, 0.8, "Brown", 15.0));
 
-        ProductServiceImpl productService = ProductServiceImpl.getInstance(PRODUCT);
+        ProductServiceImpl productService = ProductServiceImpl.getInstance(enumProductType.PRODUCT);
         productService.saveProducts(products);
 
         return products;
