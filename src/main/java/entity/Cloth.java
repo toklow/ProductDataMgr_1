@@ -20,7 +20,7 @@ public class Cloth extends Product {
 
     @Override
     public String toString() {
-        return super.toString() + PRODUCT_SEPARATOR + size + PRODUCT_SEPARATOR + material;
+        return enumProductType.CLOTH.toString() + PRODUCT_SEPARATOR + getBasicProductString() + PRODUCT_SEPARATOR + size + PRODUCT_SEPARATOR + material;
     }
 
     @Override

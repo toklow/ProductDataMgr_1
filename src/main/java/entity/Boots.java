@@ -1,5 +1,7 @@
 package entity;
 
+import enums.enumProductType;
+
 import static enums.enumProductType.BOOTS;
 
 public class Boots extends Product {
@@ -18,6 +20,6 @@ public class Boots extends Product {
 
     @Override
     public String toString() {
-        return super.toString() + PRODUCT_SEPARATOR + size + PRODUCT_SEPARATOR + isNaturalSkin;
+        return enumProductType.BOOTS.toString() + PRODUCT_SEPARATOR + getBasicProductString() + PRODUCT_SEPARATOR + size + PRODUCT_SEPARATOR + isNaturalSkin;
     }
 }

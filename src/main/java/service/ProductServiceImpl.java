@@ -8,7 +8,6 @@ import exception.ProductNameEmptyException;
 import exception.ProductPriceNoPositiveException;
 import exception.ProductWeightNoPositiveException;
 import iface.ProductService;
-import utils.FileUtils;
 import utils.ProductValidator;
 
 import java.util.ArrayList;
@@ -21,7 +20,6 @@ public class ProductServiceImpl implements ProductService  {
     private static ProductDaoImpl productDao = null;
 
     private ProductServiceImpl(enumProductType productType) {
-        ProductServiceImpl.productType = productType;
         productDao = new ProductDaoImpl(productType);
     }
 
@@ -29,10 +27,13 @@ public class ProductServiceImpl implements ProductService  {
     public static ProductServiceImpl getInstance(enumProductType productType) {
         if (instance == null) {
             instance = new ProductServiceImpl(productType);
+            ProductServiceImpl.productType = productType;
         }
         if (ProductServiceImpl.productType != productType) {
-            productDao.setProductParameters(productType);
+            productDao.setProductFileName(productType);
+            ProductServiceImpl.productType = productType;
         }
+
         return instance;
     }
 

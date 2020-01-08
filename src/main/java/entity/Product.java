@@ -62,9 +62,13 @@ public class Product {
         return productCount;
     }
 
+    protected String getBasicProductString() {
+        return id + PRODUCT_SEPARATOR + productName + PRODUCT_SEPARATOR + price + PRODUCT_SEPARATOR + weight + PRODUCT_SEPARATOR + color + PRODUCT_SEPARATOR + productCount;
+    }
+
     @Override
     public String toString() {
-        return enumProductType.PRODUCT.toString() + PRODUCT_SEPARATOR +  id + PRODUCT_SEPARATOR + productName + PRODUCT_SEPARATOR + price + PRODUCT_SEPARATOR + weight + PRODUCT_SEPARATOR + color + PRODUCT_SEPARATOR + productCount;
+        return enumProductType.PRODUCT.toString() + PRODUCT_SEPARATOR + getBasicProductString();
     }
 
     @Override

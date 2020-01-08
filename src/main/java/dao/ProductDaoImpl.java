@@ -17,10 +17,10 @@ public class ProductDaoImpl implements ProductDao {
 
 
     public ProductDaoImpl(enumProductType productType) {
-        setProductParameters(productType);
+        setProductFileName(productType);
     }
 
-    public void setProductParameters(enumProductType productType) {
+    public void setProductFileName(enumProductType productType) {
         switch (productType) {
             case BOOTS:
                 this.fileName = "boots.txt";
