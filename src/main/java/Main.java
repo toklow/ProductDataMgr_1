@@ -72,6 +72,7 @@ public class Main {
     }
 
 
+
     // For exceptions learning purposes
     private static boolean isUserNotFound(UserDao userDao, long Id) {
         try {
