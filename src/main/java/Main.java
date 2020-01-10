@@ -2,6 +2,7 @@ import entity.Boots;
 import entity.Cloth;
 import entity.Product;
 import entity.User;
+import enums.Colors;
 import enums.ProductTypes;
 import exception.UserNotFoundException;
 import iface.UserDao;
@@ -27,21 +28,21 @@ public class Main {
         }
 
         List<User> usersFromFile = userService.getAllUsers();
-        User user =  users.get(1);
+        User user = users.get(1);
         userService.removeUserById(user.getId());
         usersFromFile = userService.getAllUsers();
 
 
         List<Product> products = new ArrayList<>();
-        products.add(new Product(100L, "Marvel", 200.75, 10.0, "Brown", 100.0));
-        products.add(new Product(200L, "Shirt", 300.0, 0.4, "White", 5.0));
-        products.add(new Product(210L, "Coat", 300.0, 0.4, "White", 0.0));
-        products.add(new Product(221L, "Socks - Negative count", 300.0, 0.4, "White", -5.0));
-        products.add(new Product(222L, "", 300.0, 0.4, "White", 5.0));
-        products.add(new Product(223L, "Socks - Price 0", 0.0, 0.4, "White", 5.0));
-        products.add(new Product(224L, "Socks - Negative weight", 300.0, -0.4, "White", 5.0));
-        products.add(new Product(225L, "Socks - OK", 300.0, 0.4, "White", 5.0));
-        products.add(new Product(300L, "Sneakers", 750.0, 0.8, "Brown", 15.0));
+        products.add(new Product(100L, "Marvel", 200.75, 10.0, Colors.BLACK, 100.0));
+        products.add(new Product(200L, "Shirt", 300.0, 0.4, Colors.WHITE, 5.0));
+        products.add(new Product(210L, "Coat", 300.0, 0.4, Colors.BLUE, 0.0));
+        products.add(new Product(221L, "Socks - Negative count", 300.0, 0.4, Colors.BLUE, -5.0));
+        products.add(new Product(222L, "", 300.0, 0.4, Colors.BLUE, 5.0));
+        products.add(new Product(223L, "Socks - Price 0", 0.0, 0.4, Colors.BLUE, 5.0));
+        products.add(new Product(224L, "Socks - Negative weight", 300.0, -0.4, Colors.BLUE, 5.0));
+        products.add(new Product(225L, "Socks - OK", 300.0, 0.4, Colors.BLUE, 5.0));
+        products.add(new Product(300L, "Sneakers", 750.0, 0.8, Colors.BLUE, 15.0));
 
         ProductServiceImpl productService = ProductServiceImpl.getInstance(ProductTypes.PRODUCT);
         productService.saveProducts(products);
@@ -51,8 +52,8 @@ public class Main {
 
 
         List<Product> clothes = new ArrayList<>();
-        clothes.add(new Cloth(1L, "T-shirt", 35.9f, 0.3f, "Black", 10f,"XL", "Cotton"));
-        clothes.add(new Cloth(2L, "Pants", 48f, 0.7f, "Green", 23f, "L", "Cotton"));
+        clothes.add(new Cloth(1L, "T-shirt", 35.9f, 0.3f, Colors.RED, 10f, "XL", "Cotton"));
+        clothes.add(new Cloth(2L, "Pants", 48f, 0.7f, Colors.GREEN, 23f, "L", "Cotton"));
         productService = ProductServiceImpl.getInstance(ProductTypes.CLOTH);
         productService.saveProducts(clothes);
         count = productService.getCountProducts();
@@ -61,8 +62,8 @@ public class Main {
         productsFromFIle = productService.getAllProducts();
 
         List<Product> boots = new ArrayList<>();
-        boots.add(new Boots(1L, "High heels", 99.9f, .5f, "Red", 12f, 35, true));
-        boots.add(new Boots(2L, "Sneakers", 99.9f, .5f, "Blue", 12f, 43, false));
+        boots.add(new Boots(1L, "High heels", 99.9f, .5f, Colors.RED, 12f, 35, true));
+        boots.add(new Boots(2L, "Sneakers", 99.9f, .5f, Colors.YELLOW, 12f, 43, false));
         productService = ProductServiceImpl.getInstance(ProductTypes.BOOTS);
         productService.saveProducts(boots);
         count = productService.getCountProducts();

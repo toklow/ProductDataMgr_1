@@ -5,26 +5,29 @@ import iface.ColorOperations;
 import java.awt.*;
 
 public enum Colors implements ColorOperations {
-    RED(255, 0, 0), GREEN(0, 255, 0), BLUE(0, 0, 255), YELLOW(255, 204, 0);
+    BLACK(0X000000),
+    WHITE(0XFFFFFF),
+    RED(0XFF0000),
+    GREEN(0X008000),
+    BLUE(0X0000FF),
+    YELLOW(0XFFFF00);
 
-    private int red;
-    private int green;
-    private int blue;
+    int colorRGB;
 
-    Colors(int red, int green, int blue) {
-        this.red=red;
-        this.green=green;
-        this.blue=blue;
+
+    Colors(int colorRGB) {
+        this.colorRGB = colorRGB;
     }
 
     @Override
     public String getHexColor() {
-        return "#"+Integer.toHexString(getRGB());
+        return "#" + Integer.toHexString(getRGB());
     }
+
 
     @Override
     public int getRGB() {
-        return new Color(red, green, blue).getRGB();
+        return new Color(colorRGB).getRGB();
     }
 
 }

@@ -1,6 +1,7 @@
 package servicetest;
 
 import entity.Product;
+import enums.Colors;
 import enums.ProductTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -157,10 +158,10 @@ public class ProductServiceTest {
 */
     private List<Product> createProductsForTests () {
         List<Product> products = new ArrayList<>();
-        products.add(new Product(100L, "Marvel", 200.75, 10.0, "Brown", 100.0));
-        products.add(new Product(200L, "Shirt", 300.0, 0.4, "White", 5.0));
-        products.add(new Product(210L, "Coat", 300.0, 0.4, "White", 0.0));
-        products.add(new Product(300L, "Sneakers", 750.0, 0.8, "Brown", 15.0));
+        products.add(new Product(100L, "Marvel", 200.75, 10.0, Colors.RED, 100.0));
+        products.add(new Product(200L, "Shirt", 300.0, 0.4, Colors.WHITE, 5.0));
+        products.add(new Product(210L, "Coat", 300.0, 0.4, Colors.BLACK, 0.0));
+        products.add(new Product(300L, "Sneakers", 750.0, 0.8, Colors.YELLOW, 15.0));
 
         ProductServiceImpl productService = ProductServiceImpl.getInstance(ProductTypes.PRODUCT);
         productService.saveProducts(products);

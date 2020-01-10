@@ -2,6 +2,7 @@ package daotest;
 
 import dao.ProductDaoImpl;
 import entity.Product;
+import enums.Colors;
 import enums.ProductTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -73,15 +74,15 @@ public class ProductDaoTest {
 
     private List<Product> createProductsForTests() {
         List<Product> products = new ArrayList<>();
-        products.add(new Product(100L, "Marvel", 200.75, 10.0, "Brown", 100.0));
-        products.add(new Product(200L, "Shirt", 300.0, 0.4, "White", 5.0));
-        products.add(new Product(210L, "Coat", 300.0, 0.4, "White", 0.0));
-        products.add(new Product(300L, "Sneakers", 750.0, 0.8, "Brown", 15.0));
+        products.add(new Product(100L, "Marvel", 200.75, 10.0, Colors.RED, 100.0));
+        products.add(new Product(200L, "Shirt", 300.0, 0.4, Colors.WHITE, 5.0));
+        products.add(new Product(210L, "Coat", 300.0, 0.4, Colors.BLACK, 0.0));
+        products.add(new Product(300L, "Sneakers", 750.0, 0.8, Colors.YELLOW, 15.0));
 
         return products;
     }
 
     private Product createProductForTests() {
-        return new Product(400L, "Chardonnay Australia", 29.99, 0.90, "White", 200.0);
+        return new Product(400L, "Chardonnay Australia", 29.99, 0.90, Colors.GREEN, 200.0);
     }
 }
