@@ -1,6 +1,7 @@
 package entity;
 
-import enums.enumProductType;
+import enums.ProductTypes;
+
 import java.util.Objects;
 
 
@@ -8,7 +9,7 @@ public class Product {
 
     public final static String PRODUCT_SEPARATOR = "#";
 
-    private enumProductType productType;
+    private ProductTypes productType;
     private Long id;
     private String productName;
     private double price;
@@ -17,7 +18,7 @@ public class Product {
     private double productCount;
 
     public Product(Long id, String productName, double price, double weight, String color, double productCount) {
-        this.productType = enumProductType.PRODUCT;
+        this.productType = ProductTypes.PRODUCT;
         this.id = id;
         this.productName = productName;
         this.price = price;
@@ -26,7 +27,7 @@ public class Product {
         this.productCount = productCount;
     }
 
-    public Product(enumProductType productType, Long id, String productName, double price, double weight, String color, double productCount) {
+    public Product(ProductTypes productType, Long id, String productName, double price, double weight, String color, double productCount) {
         this.productType = productType;
         this.id = id;
         this.productName = productName;
@@ -36,7 +37,9 @@ public class Product {
         this.productCount = productCount;
     }
 
-    public enumProductType getProductType() { return productType; }
+    public ProductTypes getProductType() {
+        return productType;
+    }
 
     public Long getId() {
         return id;
@@ -68,7 +71,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return enumProductType.PRODUCT.toString() + PRODUCT_SEPARATOR + getBasicProductString();
+        return ProductTypes.PRODUCT.toString() + PRODUCT_SEPARATOR + getBasicProductString();
     }
 
     @Override

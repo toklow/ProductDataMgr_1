@@ -1,7 +1,7 @@
 package dao;
 
 import entity.Product;
-import enums.enumProductType;
+import enums.ProductTypes;
 import iface.ProductDao;
 import utils.FileUtils;
 
@@ -16,11 +16,11 @@ public class ProductDaoImpl implements ProductDao {
     private String fileName;
 
 
-    public ProductDaoImpl(enumProductType productType) {
+    public ProductDaoImpl(ProductTypes productType) {
         setProductFileName(productType);
     }
 
-    public void setProductFileName(enumProductType productType) {
+    public void setProductFileName(ProductTypes productType) {
         switch (productType) {
             case BOOTS:
                 this.fileName = "boots.txt";

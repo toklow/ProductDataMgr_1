@@ -1,5 +1,5 @@
 package enums;
 
-public enum enumProductType {
+public enum ProductTypes {
     PRODUCT, CLOTH, BOOTS
 }

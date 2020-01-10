@@ -2,11 +2,10 @@ package daotest;
 
 import dao.ProductDaoImpl;
 import entity.Product;
-import enums.enumProductType;
+import enums.ProductTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class ProductDaoTest {
         //is - File contents
 
         //then
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(enumProductType.PRODUCT);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(ProductTypes.PRODUCT);
         List<Product> productsFromFile = productDaoImpl.getAllProducts();
 
         //expected
@@ -35,7 +34,7 @@ public class ProductDaoTest {
         List<Product> products = createProductsForTests();
 
         //then
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(enumProductType.PRODUCT);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(ProductTypes.PRODUCT);
         productDaoImpl.saveProducts(products);
         List<Product> productsFromFile = productDaoImpl.getAllProducts();
 
@@ -49,7 +48,7 @@ public class ProductDaoTest {
         Product product = createProductForTests();
 
         //then
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(enumProductType.PRODUCT);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(ProductTypes.PRODUCT);
         productDaoImpl.saveProduct(product);
         Product productFromFile = productDaoImpl.getProductById(product.getId());
 
@@ -60,7 +59,7 @@ public class ProductDaoTest {
     @Test
     public void testRemoveProductById() {
         //is - File contents
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(enumProductType.PRODUCT);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(ProductTypes.PRODUCT);
         List<Product> products = productDaoImpl.getAllProducts();
         Long productId = products.get(1).getId();
 

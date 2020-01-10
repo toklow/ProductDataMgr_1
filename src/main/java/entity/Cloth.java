@@ -1,6 +1,6 @@
 package entity;
 
-import enums.enumProductType;
+import enums.ProductTypes;
 
 import java.util.Objects;
 
@@ -11,7 +11,7 @@ public class Cloth extends Product {
 
     public Cloth(Long id, String productName, double price, double weight, String color, double productCount, String size, String material) {
 
-        super(enumProductType.CLOTH, id, productName, price, weight, color, productCount);
+        super(ProductTypes.CLOTH, id, productName, price, weight, color, productCount);
 
         this.size = size;
         this.material = material;
@@ -20,7 +20,7 @@ public class Cloth extends Product {
 
     @Override
     public String toString() {
-        return enumProductType.CLOTH.toString() + PRODUCT_SEPARATOR + getBasicProductString() + PRODUCT_SEPARATOR + size + PRODUCT_SEPARATOR + material;
+        return ProductTypes.CLOTH.toString() + PRODUCT_SEPARATOR + getBasicProductString() + PRODUCT_SEPARATOR + size + PRODUCT_SEPARATOR + material;
     }
 
     @Override
