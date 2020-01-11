@@ -1,2 +1,0 @@
-1#admin#adminpass
-3#tokr#tokrpass

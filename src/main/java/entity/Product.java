@@ -1,16 +1,17 @@
 package entity;
 
 import enums.Colors;
-import enums.ProductTypes;
+import enums.Separators;
 
 import java.util.Objects;
 
 import static enums.Separators.FIELD_SEPARATOR;
+import static enums.Separators.PRODUCT_ID;
 
 
 public class Product {
 
-    private ProductTypes productType;
+    private Separators productType;
     private Long id;
     private String productName;
     private double price;
@@ -19,7 +20,7 @@ public class Product {
     private double productCount;
 
     public Product(Long id, String productName, double price, double weight, Colors color, double productCount) {
-        this.productType = ProductTypes.PRODUCT;
+        this.productType = PRODUCT_ID;
         this.id = id;
         this.productName = productName;
         this.price = price;
@@ -28,7 +29,7 @@ public class Product {
         this.productCount = productCount;
     }
 
-    public Product(ProductTypes productType, Long id, String productName, double price, double weight, Colors color, double productCount) {
+    public Product(Separators productType, Long id, String productName, double price, double weight, Colors color, double productCount) {
         this.productType = productType;
         this.id = id;
         this.productName = productName;
@@ -38,7 +39,7 @@ public class Product {
         this.productCount = productCount;
     }
 
-    public ProductTypes getProductType() {
+    public Separators getProductType() {
         return productType;
     }
 
@@ -69,19 +70,19 @@ public class Product {
     protected String getBasicProductString() {
         StringBuilder sb = new StringBuilder();
         sb.append(id);
-        sb.append(FIELD_SEPARATOR.getFieldSeparator());
+        sb.append(FIELD_SEPARATOR.getValue());
 
         sb.append(productName);
-        sb.append(FIELD_SEPARATOR.getFieldSeparator());
+        sb.append(FIELD_SEPARATOR.getValue());
 
         sb.append(price);
-        sb.append(FIELD_SEPARATOR.getFieldSeparator());
+        sb.append(FIELD_SEPARATOR.getValue());
 
         sb.append(weight);
-        sb.append(FIELD_SEPARATOR.getFieldSeparator());
+        sb.append(FIELD_SEPARATOR.getValue());
 
         sb.append(color.name());
-        sb.append(FIELD_SEPARATOR.getFieldSeparator());
+        sb.append(FIELD_SEPARATOR.getValue());
 
         sb.append(productCount);
 
@@ -90,7 +91,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return ProductTypes.PRODUCT.toString() + FIELD_SEPARATOR.getFieldSeparator() + getBasicProductString();
+        return PRODUCT_ID.getValue() + FIELD_SEPARATOR.getValue() + getBasicProductString();
     }
 
     @Override

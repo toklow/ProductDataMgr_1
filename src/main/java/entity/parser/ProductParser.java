@@ -4,28 +4,27 @@ import entity.Boots;
 import entity.Cloth;
 import entity.Product;
 import enums.Colors;
-import enums.ProductTypes;
+import enums.Material;
+import enums.Separators;
+import enums.SkinType;
 
 import java.util.EnumSet;
-
-import static enums.ProductTypes.PRODUCT;
-import static enums.Separators.FIELD_SEPARATOR;
 
 
 public class ProductParser {
 
     public static Product stringToProduct(String productStr) {
         Product product = null;
-        ProductTypes productType = parseProductType(productStr);
+        Separators productType = parseProductType(productStr);
 
         switch (productType) {
-            case PRODUCT:
+            case PRODUCT_ID:
                 product = convertToProduct(productStr);
                 break;
-            case CLOTH:
+            case CLOTH_ID:
                 product = convertToCloth(productStr);
                 break;
-            case BOOTS:
+            case BOOTS_ID:
                 product = convertToBoots(productStr);
                 break;
             default:
@@ -34,22 +33,22 @@ public class ProductParser {
         return product;
     }
 
-    private static ProductTypes parseProductType(String productStr) {
-        EnumSet<ProductTypes> productTypes = EnumSet.allOf(ProductTypes.class);
-        String[] productInformation = productStr.split(String.valueOf(FIELD_SEPARATOR));
+    private static Separators parseProductType(String productStr) {
+        EnumSet<Separators> productTypes = EnumSet.allOf(Separators.class);
+        String[] productInformation = productStr.split(Separators.FIELD_SEPARATOR.getValue());
 
-        for (ProductTypes productType : productTypes) {
-            if (productType.name().equals(productInformation[0])) {
+        for (Separators productType : productTypes) {
+            if (productType.getValue().equals(productInformation[0])) {
                 return productType;
             }
         }
 
-        return PRODUCT;
+        return Separators.PRODUCT_ID;
     }
 
 
     private static Product convertToProduct(String productStr) {
-        String[] productInformation = productStr.split(String.valueOf(FIELD_SEPARATOR));
+        String[] productInformation = productStr.split(Separators.FIELD_SEPARATOR.getValue());
         int i = 1;
 
         Long id = Long.parseLong(productInformation[i++]);
@@ -65,7 +64,7 @@ public class ProductParser {
 
 
     private static Boots convertToBoots(String productStr) {
-        String[] productInformation = productStr.split(String.valueOf(FIELD_SEPARATOR));
+        String[] productInformation = productStr.split(Separators.FIELD_SEPARATOR.getValue());
         int i = 1;
 
         Long id = Long.parseLong(productInformation[i++]);
@@ -75,13 +74,13 @@ public class ProductParser {
         String colorName = productInformation[i++];
         double productCount = Float.parseFloat(productInformation[i++]);
         Integer size = Integer.parseInt(productInformation[i++]);
-        boolean isNaturalSkin = Boolean.parseBoolean(productInformation[i]);
+        String skinTypeName = productInformation[i];
 
-        return new Boots(id, productName, price, weight, Colors.valueOf(colorName), productCount, size, isNaturalSkin);
+        return new Boots(id, productName, price, weight, Colors.valueOf(colorName), productCount, size, SkinType.valueOf(skinTypeName));
     }
 
     private static Cloth convertToCloth(String productStr) {
-        String[] productInformation = productStr.split(String.valueOf(FIELD_SEPARATOR));
+        String[] productInformation = productStr.split(Separators.FIELD_SEPARATOR.getValue());
         int i = 1;
 
         Long id = Long.parseLong(productInformation[i++]);
@@ -91,9 +90,9 @@ public class ProductParser {
         String colorName = productInformation[i++];
         double productCount = Float.parseFloat(productInformation[i++]);
         String size = productInformation[i++];
-        String material = productInformation[i];
+        String materialName = productInformation[i];
 
-        return new Cloth(id, productName, price, weight, Colors.valueOf(colorName), productCount, size, material);
+        return new Cloth(id, productName, price, weight, Colors.valueOf(colorName), productCount, size, Material.valueOf(materialName));
     }
 
 }

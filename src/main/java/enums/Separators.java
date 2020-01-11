@@ -1,15 +1,18 @@
 package enums;
 
 public enum Separators {
-    FIELD_SEPARATOR('#');
+    FIELD_SEPARATOR("#"),
+    PRODUCT_ID("P"),
+    CLOTH_ID("C"),
+    BOOTS_ID("B");
 
-    char fieldSeparator;
+    String value;
 
-    Separators(char fieldSeparator) {
-        this.fieldSeparator = fieldSeparator;
+    Separators(String value) {
+        this.value = value;
     }
 
-    public char getFieldSeparator() {
-        return fieldSeparator;
+    public String getValue() {
+        return value;
     }
 }

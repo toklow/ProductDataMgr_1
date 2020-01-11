@@ -2,7 +2,7 @@ package service;
 
 import dao.ProductDaoImpl;
 import entity.Product;
-import enums.ProductTypes;
+import enums.Separators;
 import exception.ProductCountNegativeException;
 import exception.ProductNameEmptyException;
 import exception.ProductPriceNoPositiveException;
@@ -15,16 +15,16 @@ import java.util.List;
 
 public class ProductServiceImpl implements ProductService  {
 
-    private static ProductTypes productType;
+    private static Separators productType;
     private static ProductServiceImpl instance = null;
     private static ProductDaoImpl productDao = null;
 
-    private ProductServiceImpl(ProductTypes productType) {
+    private ProductServiceImpl(Separators productType) {
         productDao = new ProductDaoImpl(productType);
     }
 
 
-    public static ProductServiceImpl getInstance(ProductTypes productType) {
+    public static ProductServiceImpl getInstance(Separators productType) {
         if (instance == null) {
             instance = new ProductServiceImpl(productType);
             ProductServiceImpl.productType = productType;

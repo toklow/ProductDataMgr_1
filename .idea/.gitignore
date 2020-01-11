@@ -1,6 +1,10 @@
 # Default ignored files
 *.[oa]
 *~
+users.txt
+products.txt
+clothes.txt
+boots.txt
 /workspace.xml
 /target
 

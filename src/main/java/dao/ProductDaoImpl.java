@@ -1,7 +1,7 @@
 package dao;
 
 import entity.Product;
-import enums.ProductTypes;
+import enums.Separators;
 import iface.ProductDao;
 import utils.FileUtils;
 
@@ -16,19 +16,19 @@ public class ProductDaoImpl implements ProductDao {
     private String fileName;
 
 
-    public ProductDaoImpl(ProductTypes productType) {
+    public ProductDaoImpl(Separators productType) {
         setProductFileName(productType);
     }
 
-    public void setProductFileName(ProductTypes productType) {
+    public void setProductFileName(Separators productType) {
         switch (productType) {
-            case BOOTS:
+            case BOOTS_ID:
                 this.fileName = "boots.txt";
                 break;
-            case CLOTH:
+            case CLOTH_ID:
                 this.fileName = "clothes.txt";
                 break;
-            case PRODUCT:
+            case PRODUCT_ID:
             default:
                 this.fileName = "products.txt";
                 break;

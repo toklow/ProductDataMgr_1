@@ -2,9 +2,9 @@ package entity;
 
 import java.util.Objects;
 
-public class User {
+import static enums.Separators.FIELD_SEPARATOR;
 
-    public final static String USER_SEPARATOR = "#";
+public class User {
 
         private Long id;
         private String login;
@@ -58,7 +58,7 @@ public class User {
 
     @Override
     public String toString() {
-        return id + USER_SEPARATOR + login + USER_SEPARATOR + password;
+        return id + FIELD_SEPARATOR.getValue() + login + FIELD_SEPARATOR.getValue() + password;
     }
 
     @Override

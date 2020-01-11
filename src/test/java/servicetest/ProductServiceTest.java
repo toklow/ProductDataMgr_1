@@ -2,13 +2,14 @@ package servicetest;
 
 import entity.Product;
 import enums.Colors;
-import enums.ProductTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import service.ProductServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static enums.Separators.PRODUCT_ID;
 
 public class ProductServiceTest {
 
@@ -18,7 +19,7 @@ public class ProductServiceTest {
         List<Product> products = createProductsForTests();
 
         //then
-        ProductServiceImpl productService = ProductServiceImpl.getInstance(ProductTypes.PRODUCT);
+        ProductServiceImpl productService = ProductServiceImpl.getInstance(PRODUCT_ID);
         List<Product> productsFromTestClass = productService.getAllProducts();
 
         //expected
@@ -31,7 +32,7 @@ public class ProductServiceTest {
         List<Product> products = createProductsForTests();
 
         //then
-        ProductServiceImpl productService = ProductServiceImpl.getInstance(ProductTypes.PRODUCT);
+        ProductServiceImpl productService = ProductServiceImpl.getInstance(PRODUCT_ID);
         List<Product> productsFromTestClass = productService.getAllProducts();
         products.remove(1);
 
@@ -163,7 +164,7 @@ public class ProductServiceTest {
         products.add(new Product(210L, "Coat", 300.0, 0.4, Colors.BLACK, 0.0));
         products.add(new Product(300L, "Sneakers", 750.0, 0.8, Colors.YELLOW, 15.0));
 
-        ProductServiceImpl productService = ProductServiceImpl.getInstance(ProductTypes.PRODUCT);
+        ProductServiceImpl productService = ProductServiceImpl.getInstance(PRODUCT_ID);
         productService.saveProducts(products);
 
         return products;

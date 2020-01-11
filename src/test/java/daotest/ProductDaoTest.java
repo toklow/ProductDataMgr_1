@@ -3,13 +3,13 @@ package daotest;
 import dao.ProductDaoImpl;
 import entity.Product;
 import enums.Colors;
-import enums.ProductTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static enums.Separators.PRODUCT_ID;
 
 
 public class ProductDaoTest {
@@ -21,7 +21,7 @@ public class ProductDaoTest {
         //is - File contents
 
         //then
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(ProductTypes.PRODUCT);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(PRODUCT_ID);
         List<Product> productsFromFile = productDaoImpl.getAllProducts();
 
         //expected
@@ -35,7 +35,7 @@ public class ProductDaoTest {
         List<Product> products = createProductsForTests();
 
         //then
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(ProductTypes.PRODUCT);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(PRODUCT_ID);
         productDaoImpl.saveProducts(products);
         List<Product> productsFromFile = productDaoImpl.getAllProducts();
 
@@ -49,7 +49,7 @@ public class ProductDaoTest {
         Product product = createProductForTests();
 
         //then
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(ProductTypes.PRODUCT);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(PRODUCT_ID);
         productDaoImpl.saveProduct(product);
         Product productFromFile = productDaoImpl.getProductById(product.getId());
 
@@ -60,7 +60,7 @@ public class ProductDaoTest {
     @Test
     public void testRemoveProductById() {
         //is - File contents
-        ProductDaoImpl productDaoImpl = new ProductDaoImpl(ProductTypes.PRODUCT);
+        ProductDaoImpl productDaoImpl = new ProductDaoImpl(PRODUCT_ID);
         List<Product> products = productDaoImpl.getAllProducts();
         Long productId = products.get(1).getId();
 
