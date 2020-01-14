@@ -7,4 +7,5 @@ clothes.txt
 boots.txt
 /workspace.xml
 /target
-
+/out
+/.idea
