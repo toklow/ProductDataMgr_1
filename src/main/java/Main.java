@@ -1,7 +1,5 @@
-import entity.Boots;
-import entity.Cloth;
-import entity.Product;
-import entity.User;
+import dao.EmployeeDao;
+import entity.*;
 import enums.Colors;
 import enums.Material;
 import enums.Separators;
@@ -20,10 +18,13 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        EmployeeDao employeeDao = new EmployeeDao();
+        List<Employee> employees = employeeDao.getAllEmployees();
+
         List<User> users = new ArrayList<>();
         users.add(new User(1L, "admin", "adminpass"));
-        users.add(new User(2L,"pablo", "pablopass"));
-        users.add(new User(3L,"tokr", "tokrpass"));
+        users.add(new User(2L, "pablo", "pablopass"));
+        users.add(new User(3L, "tokr", "tokrpass"));
 
         UserServiceImpl userService = UserServiceImpl.getInstance();
         for (User user : users) {
