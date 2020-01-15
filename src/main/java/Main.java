@@ -11,6 +11,7 @@ import service.UserServiceImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -19,7 +20,24 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         EmployeeDao employeeDao = new EmployeeDao();
-        List<Employee> employees = employeeDao.getAllEmployees();
+
+        List<Employee> employees = new LinkedList<>();
+        employees.add(new Employee("Jan", "Kowalski", 23));
+        employees.add(new Employee("Michal", "Jankowski", 18));
+        employees.add(new Employee("Piotr", "Nowak", 42));
+        employees.add(new Employee("Ewa", "Jezierska", 18));
+        for (Employee employee : employees) {
+            employeeDao.createEmployee(employee);
+        }
+
+        employeeDao.deleteEmployee("Jankowski");
+        employeeDao.deleteEmployee("Unknown");
+        List<Employee> employeesFromDB = employeeDao.getAllEmployees();
+        Employee employee = employeesFromDB.get(1);
+        employee.setLastName(employee.getLastName() + "-Konieczny");
+        employeeDao.updateEmployee(employee);
+        System.out.println(employeesFromDB);
+
 
         List<User> users = new ArrayList<>();
         users.add(new User(1L, "admin", "adminpass"));

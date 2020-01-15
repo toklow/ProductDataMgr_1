@@ -12,6 +12,13 @@ public class Employee {
     private Integer age;
 
 
+    public Employee(String name, String lastName, Integer age) {
+        this.id = -1L;
+        this.name = name;
+        this.lastName = lastName;
+        this.age = age;
+    }
+
     public Employee(Long id, String name, String lastName, Integer age) {
         this.id = id;
         this.name = name;
@@ -57,9 +64,9 @@ public class Employee {
         if (this == o) return true;
         if (!(o instanceof Employee)) return false;
         Employee employee = (Employee) o;
-        return Objects.equals(this.id, employee.id) &&
-                Objects.equals(this.name, employee.name) &&
-                Objects.equals(this.lastName, employee.lastName);
+        return (Objects.equals(this.name, employee.name) &&
+                Objects.equals(this.lastName, employee.lastName) &&
+                Objects.equals(this.age, employee.age));
     }
 
     @Override

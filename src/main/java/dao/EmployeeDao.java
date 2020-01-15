@@ -49,4 +49,54 @@ public class EmployeeDao {
         return employees;
     }
 
+    public void createEmployee(Employee employee) {
+        PreparedStatement statement;
+        try {
+            String query = "insert into " + tableName + " (name, lastname, age) values(?, ?, ?)";
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, employee.getName());
+            statement.setString(2, employee.getLastName());
+            statement.setInt(3, employee.getAge());
+
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateEmployee(Employee employee) {
+        PreparedStatement statement;
+        try {
+            String query = "update " + tableName + " set name = ?, lastname = ?, age = ? where id = ?";
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, employee.getName());
+            statement.setString(2, employee.getLastName());
+            statement.setInt(3, employee.getAge());
+            statement.setLong(4, employee.getId());
+
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteEmployee(String lastName) {
+        PreparedStatement statement;
+        try {
+            String query = "delete from " + tableName + " where lastname = ?";
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, lastName);
+
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

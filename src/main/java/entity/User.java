@@ -1,31 +1,35 @@
 package entity;
 
+import enums.Role;
+
 import java.util.Objects;
 
 import static enums.Separators.FIELD_SEPARATOR;
 
 public class User {
 
-        private Long id;
-        private String login;
-        private String password;
-        private String email;
-        private int age;
+    private Long id;
+    private String login;
+    private String password;
+    private String email;
+    private Integer age;
+    private Role roleId;
 
-        public User() {
-            id = 0L;
-            login = "login";
-            password = "pass";
-            email = "mail@example.com";
-            age = 0;
-        }
+    public User() {
+        id = 0L;
+        login = "login";
+        password = "pass";
+        email = "mail@example.com";
+        age = 0;
+    }
 
-    public User(Long id, String login, String password, String email, int age) {
+    public User(Long id, String login, String password, String email, Integer age, Role roleId) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.email = email;
         this.age = age;
+        this.roleId = roleId;
     }
 
     public User(Long id, String login, String password) {
@@ -34,6 +38,7 @@ public class User {
         this.password = password;
         this.email = "mail@example.com";
         this.age = 0;
+        this.roleId = Role.USER;
     }
 
     public Long getId() {
@@ -52,13 +57,17 @@ public class User {
         return email;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
+    }
+
+    public Role getRoleId() {
+        return roleId;
     }
 
     @Override
     public String toString() {
-        return id + FIELD_SEPARATOR.getValue() + login + FIELD_SEPARATOR.getValue() + password;
+        return id + FIELD_SEPARATOR.getValue() + login + FIELD_SEPARATOR.getValue() + password + FIELD_SEPARATOR.getValue() + email + FIELD_SEPARATOR.getValue() + age + FIELD_SEPARATOR.getValue() + roleId;
     }
 
     @Override
