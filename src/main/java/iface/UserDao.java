@@ -9,10 +9,16 @@ import java.util.List;
 
 public interface UserDao {
     List<User> getAllUsers() throws IOException;
+
     void saveUser(User user) throws IOException;
+
     void saveUsers(List<User> users) throws FileNotFoundException;
-    User getUserByLogin(String login) throws IOException, UserNotFoundException;
-    User getUserById(Long userId) throws IOException, UserNotFoundException;
+
+    User getUser(String login) throws UserNotFoundException;
+
+    User getUser(Long userId) throws UserNotFoundException;
+
     void removeUserByLogin(String login);
+
     void removeUserById(Long id) throws IOException;
 }

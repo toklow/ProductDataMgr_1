@@ -99,10 +99,10 @@ public class Main {
     // For exceptions learning purposes
     private static boolean isUserNotFound(UserDao userDao, long Id) {
         try {
-            User user = userDao.getUserById(Id);
+            User user = userDao.getUser(Id);
             System.out.println("User found: " + user.getId() + " " + user.getLogin());
             return false;
-        } catch (UserNotFoundException | IOException e) {
+        } catch (UserNotFoundException e) {
             e.printStackTrace();
             return true;
         }
@@ -112,10 +112,10 @@ public class Main {
     // For exceptions learning purposes
     private static boolean isUserNotFound(UserDao userDao, String userName) {
         try {
-            User user = userDao.getUserByLogin(userName);
+            User user = userDao.getUser(userName);
             System.out.println("User found: " + user.getId() + " " + user.getLogin());
             return false;
-        } catch (UserNotFoundException | IOException e) {
+        } catch (UserNotFoundException e) {
             e.printStackTrace();
             return true;
         }

@@ -62,7 +62,6 @@ public class ProductParser {
     }
 
 
-
     private static Boots convertToBoots(String productStr) {
         String[] productInformation = productStr.split(Separators.FIELD_SEPARATOR.getValue());
         int i = 1;

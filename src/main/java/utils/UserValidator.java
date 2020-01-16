@@ -8,8 +8,6 @@ import exception.UserShortLengthLoginException;
 import exception.UserShortLengthPasswordException;
 import iface.UserDao;
 
-import java.io.IOException;
-
 public class UserValidator {
 
     private final static int LOGIN_MIN_LENGTH = 4;
@@ -43,13 +41,12 @@ public class UserValidator {
     }
 
     private boolean isUserByLoginExist (String login) {
-        UserDao userDao = new UserDaoImpl("users.txt");
+        UserDao userDao = new UserDaoImpl();
 
         try {
-            User user = userDao.getUserByLogin(login);
+            User user = userDao.getUser(login);
             return true;
-        }
-        catch (UserNotFoundException | IOException e) {
+        } catch (UserNotFoundException e) {
             return false;
         }
     }

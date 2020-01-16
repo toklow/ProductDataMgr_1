@@ -1,2 +1,2 @@
-1#admin#adminpass
-3#tokr#tokrpass
+1#admin#adminpass#mail@example.com#0#USER
+3#tokr#tokrpass#mail@example.com#0#USER

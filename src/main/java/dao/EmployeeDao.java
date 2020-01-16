@@ -2,36 +2,27 @@ package dao;
 
 import entity.Employee;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
 public class EmployeeDao {
-    private final String databaseName = "people";
+
     private final String tableName = "employees";
-    private final String employee = "root";
-    private final String password = "admin";
-    private Connection connection;
+    private ConnectionDB connectionDB = null;
 
     public EmployeeDao() {
-        init();
-    }
-
-
-    private void init() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/" + databaseName + "?useSSL=false", employee, password);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        connectionDB = ConnectionDB.getInstance();
     }
 
     public List<Employee> getAllEmployees() {
         List<Employee> employees = new LinkedList<>();
         Statement statement;
         try {
-            statement = connection.createStatement();
+            statement = connectionDB.getConnection().createStatement();
             String query = "select * from " + tableName;
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -53,7 +44,7 @@ public class EmployeeDao {
         PreparedStatement statement;
         try {
             String query = "insert into " + tableName + " (name, lastname, age) values(?, ?, ?)";
-            statement = connection.prepareStatement(query);
+            statement = connectionDB.getConnection().prepareStatement(query);
 
             statement.setString(1, employee.getName());
             statement.setString(2, employee.getLastName());
@@ -70,7 +61,7 @@ public class EmployeeDao {
         PreparedStatement statement;
         try {
             String query = "update " + tableName + " set name = ?, lastname = ?, age = ? where id = ?";
-            statement = connection.prepareStatement(query);
+            statement = connectionDB.getConnection().prepareStatement(query);
 
             statement.setString(1, employee.getName());
             statement.setString(2, employee.getLastName());
@@ -88,7 +79,7 @@ public class EmployeeDao {
         PreparedStatement statement;
         try {
             String query = "delete from " + tableName + " where lastname = ?";
-            statement = connection.prepareStatement(query);
+            statement = connectionDB.getConnection().prepareStatement(query);
 
             statement.setString(1, lastName);
 

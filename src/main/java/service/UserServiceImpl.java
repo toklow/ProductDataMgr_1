@@ -14,13 +14,12 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
-    private final static String USER_FILE_NAME = "users.txt";
     private static UserServiceImpl instance = null;
     private static UserDao userDao = null;
 
 
     private UserServiceImpl() {
-        userDao = new UserDaoImpl(USER_FILE_NAME);
+        userDao = new UserDaoImpl();
     }
 
     public static UserServiceImpl getInstance() {

@@ -13,7 +13,7 @@ public class User {
     private String password;
     private String email;
     private Integer age;
-    private Role roleId;
+    private Integer roleId;
 
     public User() {
         id = 0L;
@@ -23,7 +23,7 @@ public class User {
         age = 0;
     }
 
-    public User(Long id, String login, String password, String email, Integer age, Role roleId) {
+    public User(Long id, String login, String password, String email, Integer age, Integer roleId) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -38,7 +38,7 @@ public class User {
         this.password = password;
         this.email = "mail@example.com";
         this.age = 0;
-        this.roleId = Role.USER;
+        this.roleId = Role.USER.ordinal();
     }
 
     public Long getId() {
@@ -61,8 +61,17 @@ public class User {
         return age;
     }
 
-    public Role getRoleId() {
+    public Integer getRoleId() {
         return roleId;
+    }
+
+    public Role getRole() {
+        for (Role role : Role.values()) {
+            if (role.ordinal() == roleId) {
+                return role;
+            }
+        }
+        return Role.USER;
     }
 
     @Override
