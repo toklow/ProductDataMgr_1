@@ -13,7 +13,7 @@ public class User {
     private String password;
     private String email;
     private Integer age;
-    private Integer roleId;
+    private Role role;
 
     public User() {
         id = 0L;
@@ -23,13 +23,13 @@ public class User {
         age = 0;
     }
 
-    public User(Long id, String login, String password, String email, Integer age, Integer roleId) {
+    public User(Long id, String login, String password, String email, Integer age, Role role) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.email = email;
         this.age = age;
-        this.roleId = roleId;
+        this.role = role;
     }
 
     public User(Long id, String login, String password) {
@@ -38,7 +38,7 @@ public class User {
         this.password = password;
         this.email = "mail@example.com";
         this.age = 0;
-        this.roleId = Role.USER.ordinal();
+        this.role = Role.USER;
     }
 
     public Long getId() {
@@ -62,21 +62,16 @@ public class User {
     }
 
     public Integer getRoleId() {
-        return roleId;
+        return role.getValue();
     }
 
-    public Role getRole() {
-        for (Role role : Role.values()) {
-            if (role.ordinal() == roleId) {
-                return role;
-            }
-        }
-        return Role.USER;
+    public Role getRole()  {
+        return role;
     }
 
     @Override
     public String toString() {
-        return id + FIELD_SEPARATOR.getValue() + login + FIELD_SEPARATOR.getValue() + password + FIELD_SEPARATOR.getValue() + email + FIELD_SEPARATOR.getValue() + age + FIELD_SEPARATOR.getValue() + roleId;
+        return id + FIELD_SEPARATOR.getValue() + login + FIELD_SEPARATOR.getValue() + password + FIELD_SEPARATOR.getValue() + email + FIELD_SEPARATOR.getValue() + age + FIELD_SEPARATOR.getValue() + role;
     }
 
     @Override

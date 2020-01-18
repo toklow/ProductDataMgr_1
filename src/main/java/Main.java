@@ -50,7 +50,7 @@ public class Main {
         }
 
         List<User> usersFromFile = userService.getAllUsers();
-        User user = users.get(1);
+        User user = usersFromFile.get(1);
         userService.removeUserById(user.getId());
         usersFromFile = userService.getAllUsers();
 

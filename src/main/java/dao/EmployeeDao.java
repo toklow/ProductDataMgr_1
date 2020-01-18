@@ -12,7 +12,7 @@ import java.util.List;
 public class EmployeeDao {
 
     private final String tableName = "employees";
-    private ConnectionDB connectionDB = null;
+    private ConnectionDB connectionDB;
 
     public EmployeeDao() {
         connectionDB = ConnectionDB.getInstance();
@@ -89,5 +89,4 @@ public class EmployeeDao {
             e.printStackTrace();
         }
     }
-
 }

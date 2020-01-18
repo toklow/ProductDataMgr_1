@@ -1,10 +1,10 @@
 package dao;
 
 import entity.User;
+import enums.Role;
 import exception.UserNotFoundException;
 import iface.UserDao;
 
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +14,7 @@ import java.util.List;
 public class UserDaoImpl implements UserDao {
 
     private final String tableName = "users";
-    private ConnectionDB connectionDB = null;
+    private ConnectionDB connectionDB;
 
 
     public UserDaoImpl() {
@@ -24,7 +24,7 @@ public class UserDaoImpl implements UserDao {
 
     public List<User> getAllUsers() {
         String query = "select * from " + tableName;
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         List<User> users = null;
         try {
             statement = connectionDB.getConnection().prepareStatement(query);
@@ -61,8 +61,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     public User getUser(String login) throws UserNotFoundException {
-        String query = "select * from " + tableName + " where login = values(?)";
-        PreparedStatement statement = null;
+        String query = "select * from " + tableName + " where login = ?";
+        PreparedStatement statement;
         List<User> users = null;
         try {
             statement = connectionDB.getConnection().prepareStatement(query);
@@ -72,15 +72,15 @@ public class UserDaoImpl implements UserDao {
             e.printStackTrace();
         }
 
-        if (users.size() == 0) {
+        if (users.isEmpty()) {
             throw new UserNotFoundException("User with login: " + login + " not found");
         }
         return users.get(0);
     }
 
     public User getUser(Long userId) throws UserNotFoundException {
-        String query = "select * from " + tableName + " where id = values(?)";
-        PreparedStatement statement = null;
+        String query = "select * from " + tableName + " where id = ?";
+        PreparedStatement statement;
         List<User> users = null;
         try {
             statement = connectionDB.getConnection().prepareStatement(query);
@@ -90,7 +90,7 @@ public class UserDaoImpl implements UserDao {
             e.printStackTrace();
         }
 
-        if (users.size() == 0) {
+        if (users.isEmpty()) {
             throw new UserNotFoundException("User with id: " + userId + " not found");
         }
         return users.get(0);
@@ -107,7 +107,7 @@ public class UserDaoImpl implements UserDao {
                         resultSet.getString("password"),
                         resultSet.getString("email"),
                         resultSet.getInt("age"),
-                        resultSet.getInt("user_role_id"));
+                        Role.valueToRole(resultSet.getInt("user_role_id")));
 
                 users.add(user);
             }
@@ -118,18 +118,29 @@ public class UserDaoImpl implements UserDao {
         return users;
     }
 
-    public void removeUserByLogin(String login) {
+    public void removeUser(String login) {
+        String query = "delete from " + tableName + " where login = ?";
+        PreparedStatement statement;
 
+        try {
+            statement = connectionDB.getConnection().prepareStatement(query);
+            statement.setString(1, login);
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void removeUserById(Long id) throws IOException {
-        List<User> users = getAllUsers();
-        for (User user : users) {
-            if (user.getId().compareTo(id) == 0) {
-                users.remove(user);
-                saveUsers(users);
-                break;
-            }
+    public void removeUserById(Long userId) {
+        String query = "delete from " + tableName + " where id = ?";
+        PreparedStatement statement;
+
+        try {
+            statement = connectionDB.getConnection().prepareStatement(query);
+            statement.setLong(1, userId);
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

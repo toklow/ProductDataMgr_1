@@ -6,7 +6,7 @@ public enum Separators {
     CLOTH_ID("C"),
     BOOTS_ID("B");
 
-    String value;
+    private String value;
 
     Separators(String value) {
         this.value = value;
@@ -15,4 +15,6 @@ public enum Separators {
     public String getValue() {
         return value;
     }
+
+
 }
