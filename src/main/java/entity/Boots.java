@@ -3,7 +3,7 @@ package entity;
 import enums.Colors;
 import enums.SkinType;
 
-import static enums.Separators.BOOTS_ID;
+import static enums.ProductType.BOOTS_ID;
 import static enums.Separators.FIELD_SEPARATOR;
 
 public class Boots extends Product {
@@ -18,6 +18,14 @@ public class Boots extends Product {
         this.size = size;
         this.skinType = skinType;
 
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public SkinType getSkinType() {
+        return skinType;
     }
 
     @Override

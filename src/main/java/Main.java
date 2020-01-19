@@ -2,7 +2,7 @@ import dao.EmployeeDao;
 import entity.*;
 import enums.Colors;
 import enums.Material;
-import enums.Separators;
+import enums.ProductType;
 import enums.SkinType;
 import exception.UserNotFoundException;
 import iface.UserDao;
@@ -34,7 +34,7 @@ public class Main {
         employeeDao.deleteEmployee("Unknown");
         List<Employee> employeesFromDB = employeeDao.getAllEmployees();
         Employee employee = employeesFromDB.get(1);
-        employee.setLastName(employee.getLastName() + "-Konieczny");
+        employee.setLastName("Kowalski na Konieczny");
         employeeDao.updateEmployee(employee);
         System.out.println(employeesFromDB);
 
@@ -66,7 +66,7 @@ public class Main {
         products.add(new Product(225L, "Socks - OK", 300.0, 0.4, Colors.BLUE, 5.0));
         products.add(new Product(300L, "Sneakers", 750.0, 0.8, Colors.BLUE, 15.0));
 
-        ProductServiceImpl productService = ProductServiceImpl.getInstance(Separators.PRODUCT_ID);
+        ProductServiceImpl productService = ProductServiceImpl.getInstance(ProductType.PRODUCT_ID);
         productService.saveProducts(products);
         Integer count = productService.getCountProducts();
         boolean isProductOnStock = productService.isProductOnStockByName("Shirt");
@@ -76,7 +76,7 @@ public class Main {
         List<Product> clothes = new ArrayList<>();
         clothes.add(new Cloth(1L, "T-shirt", 35.9f, 0.3f, Colors.RED, 10f, "XL", Material.COTTON));
         clothes.add(new Cloth(2L, "Pants", 48f, 0.7f, Colors.GREEN, 23f, "L", Material.WOOL));
-        productService = ProductServiceImpl.getInstance(Separators.CLOTH_ID);
+        productService = ProductServiceImpl.getInstance(ProductType.CLOTH_ID);
         productService.saveProducts(clothes);
         count = productService.getCountProducts();
         isProductOnStock = productService.isProductOnStockByName("Shirt");
@@ -86,7 +86,7 @@ public class Main {
         List<Product> boots = new ArrayList<>();
         boots.add(new Boots(1L, "High heels", 99.9f, .5f, Colors.RED, 12f, 35, SkinType.NATURAL));
         boots.add(new Boots(2L, "Sneakers", 99.9f, .5f, Colors.YELLOW, 12f, 43, SkinType.ARTIFICIAL));
-        productService = ProductServiceImpl.getInstance(Separators.BOOTS_ID);
+        productService = ProductServiceImpl.getInstance(ProductType.BOOTS_ID);
         productService.saveProducts(boots);
         count = productService.getCountProducts();
         isProductOnStock = productService.isProductOnStockByName("Shirt");

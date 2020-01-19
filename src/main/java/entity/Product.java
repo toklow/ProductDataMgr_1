@@ -1,17 +1,17 @@
 package entity;
 
 import enums.Colors;
-import enums.Separators;
+import enums.ProductType;
 
 import java.util.Objects;
 
+import static enums.ProductType.PRODUCT_ID;
 import static enums.Separators.FIELD_SEPARATOR;
-import static enums.Separators.PRODUCT_ID;
 
 
 public class Product {
 
-    private Separators productType;
+    private ProductType productType;
     private Long id;
     private String productName;
     private double price;
@@ -29,7 +29,7 @@ public class Product {
         this.productCount = productCount;
     }
 
-    public Product(Separators productType, Long id, String productName, double price, double weight, Colors color, double productCount) {
+    public Product(ProductType productType, Long id, String productName, double price, double weight, Colors color, double productCount) {
         this.productType = productType;
         this.id = id;
         this.productName = productName;
@@ -39,7 +39,7 @@ public class Product {
         this.productCount = productCount;
     }
 
-    public Separators getProductType() {
+    public ProductType getProductType() {
         return productType;
     }
 

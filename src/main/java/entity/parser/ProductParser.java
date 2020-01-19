@@ -5,93 +5,70 @@ import entity.Cloth;
 import entity.Product;
 import enums.Colors;
 import enums.Material;
-import enums.Separators;
+import enums.ProductType;
 import enums.SkinType;
 
-import java.util.EnumSet;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 public class ProductParser {
 
-    public static Product stringToProduct(String productStr) {
+    public static Product resultSetToProduct(ResultSet resultSet) throws SQLException {
         Product product = null;
-        Separators productType = parseProductType(productStr);
+        ProductType productType = ProductType.valueToEnum(resultSet.getString("type"));
 
         switch (productType) {
             case PRODUCT_ID:
-                product = convertToProduct(productStr);
+                product = convertToProduct(resultSet);
                 break;
             case CLOTH_ID:
-                product = convertToCloth(productStr);
+                product = convertToCloth(resultSet);
                 break;
             case BOOTS_ID:
-                product = convertToBoots(productStr);
+                product = convertToBoots(resultSet);
                 break;
             default:
                 break;
         }
         return product;
-    }
 
-    private static Separators parseProductType(String productStr) {
-        EnumSet<Separators> productTypes = EnumSet.allOf(Separators.class);
-        String[] productInformation = productStr.split(Separators.FIELD_SEPARATOR.getValue());
-
-        for (Separators productType : productTypes) {
-            if (productType.getValue().equals(productInformation[0])) {
-                return productType;
-            }
-        }
-
-        return Separators.PRODUCT_ID;
     }
 
 
-    private static Product convertToProduct(String productStr) {
-        String[] productInformation = productStr.split(Separators.FIELD_SEPARATOR.getValue());
-        int i = 1;
+    private static Product convertToProduct(ResultSet resultSet) throws SQLException {
 
-        Long id = Long.parseLong(productInformation[i++]);
-        String productName = productInformation[i++];
-        double price = Float.parseFloat(productInformation[i++]);
-        double weight = Float.parseFloat(productInformation[i++]);
-        String colorName = productInformation[i++];
-        double productCount = Float.parseFloat(productInformation[i]);
+        return (new Product(resultSet.getLong("id"),
+                resultSet.getString("name"),
+                resultSet.getDouble("price"),
+                resultSet.getDouble("weight"),
+                Colors.valueOf(resultSet.getString("color")),
+                resultSet.getDouble("count")));
 
-        return new Product(id, productName, price, weight, Colors.valueOf(colorName), productCount);
     }
 
-
-    private static Boots convertToBoots(String productStr) {
-        String[] productInformation = productStr.split(Separators.FIELD_SEPARATOR.getValue());
-        int i = 1;
-
-        Long id = Long.parseLong(productInformation[i++]);
-        String productName = productInformation[i++];
-        double price = Float.parseFloat(productInformation[i++]);
-        double weight = Float.parseFloat(productInformation[i++]);
-        String colorName = productInformation[i++];
-        double productCount = Float.parseFloat(productInformation[i++]);
-        Integer size = Integer.parseInt(productInformation[i++]);
-        String skinTypeName = productInformation[i];
-
-        return new Boots(id, productName, price, weight, Colors.valueOf(colorName), productCount, size, SkinType.valueOf(skinTypeName));
+    //public Boots(Long id, String productName, double price, double weight, Colors color, double productCount, Integer size, SkinType skinType)
+    private static Boots convertToBoots(ResultSet resultSet) throws SQLException {
+        return (new Boots(resultSet.getLong("id"),
+                resultSet.getString("name"),
+                resultSet.getDouble("price"),
+                resultSet.getDouble("weight"),
+                Colors.valueOf(resultSet.getString("color")),
+                resultSet.getDouble("count"),
+                resultSet.getInt("sizeNum"),
+                SkinType.valueOf(resultSet.getString("material"))));
     }
 
-    private static Cloth convertToCloth(String productStr) {
-        String[] productInformation = productStr.split(Separators.FIELD_SEPARATOR.getValue());
-        int i = 1;
+    private static Cloth convertToCloth(ResultSet resultSet) throws SQLException {
+        return (new Cloth(resultSet.getLong("id"),
+                resultSet.getString("name"),
+                resultSet.getDouble("price"),
+                resultSet.getDouble("weight"),
+                Colors.valueOf(resultSet.getString("color")),
+                resultSet.getDouble("count"),
+                resultSet.getString("sizeStr"),
+                Material.valueOf(resultSet.getString("material"))));
 
-        Long id = Long.parseLong(productInformation[i++]);
-        String productName = productInformation[i++];
-        double price = Float.parseFloat(productInformation[i++]);
-        double weight = Float.parseFloat(productInformation[i++]);
-        String colorName = productInformation[i++];
-        double productCount = Float.parseFloat(productInformation[i++]);
-        String size = productInformation[i++];
-        String materialName = productInformation[i];
-
-        return new Cloth(id, productName, price, weight, Colors.valueOf(colorName), productCount, size, Material.valueOf(materialName));
     }
 
 }

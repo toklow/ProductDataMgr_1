@@ -1,128 +1,181 @@
 package dao;
 
+import entity.Boots;
+import entity.Cloth;
 import entity.Product;
-import enums.Separators;
+import enums.ProductType;
 import iface.ProductDao;
-import utils.FileUtils;
 
-import java.io.*;
-import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
-import static entity.parser.ProductParser.stringToProduct;
+import static entity.parser.ProductParser.resultSetToProduct;
 
 public class ProductDaoImpl implements ProductDao {
 
-    private String fileName;
+    private final String tableName = "products";
+    private ConnectionDB connectionDB;
+    private ProductType productType;
 
-
-    public ProductDaoImpl(Separators productType) {
-        setProductFileName(productType);
+    public ProductDaoImpl(ProductType productType) {
+        connectionDB = ConnectionDB.getInstance();
+        this.productType = productType;
     }
 
-    public void setProductFileName(Separators productType) {
-        switch (productType) {
-            case BOOTS_ID:
-                this.fileName = "boots.txt";
-                break;
-            case CLOTH_ID:
-                this.fileName = "clothes.txt";
-                break;
-            case PRODUCT_ID:
-            default:
-                this.fileName = "products.txt";
-                break;
-        }
+    public ProductType getProductType() {
+        return productType;
+    }
 
-        try {
-            FileUtils.createNewFile(fileName);
-        } catch (IOException e) {
-            System.out.println("Error with file path");
-            System.exit(-1);   // exit closes application
-        }
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
     }
 
     public List<Product> getAllProducts() {
+        String query = "select * from " + tableName + " where type = ?";
+        PreparedStatement statement;
+        List<Product> products = null;
+        try {
+            statement = connectionDB.getConnection().prepareStatement(query);
+            statement.setString(1, this.productType.getValue());
+            products = getAllProducts(statement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
+    private List<Product> getAllProducts(PreparedStatement statement) {
+        List<Product> products = new LinkedList<>();
 
         try {
-            FileReader fileReader = new FileReader(this.fileName);
-            BufferedReader reader = new BufferedReader(fileReader);
-            List<Product> products = new ArrayList<>();
-            String singleLineFromFile;
-
-            while ((singleLineFromFile = reader.readLine()) != null) {
-                products.add(stringToProduct(singleLineFromFile));
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                products.add(resultSetToProduct(resultSet));
             }
-            return products;
-
-        } catch (IOException e) {
+            statement.close();
+        } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return products;
+    }
+
+    public Product getProduct(Long productId) {
+        String query = "select * from " + tableName + " where type = ? and id = ?";
+        PreparedStatement statement;
+        List<Product> products = null;
+        try {
+            statement = connectionDB.getConnection().prepareStatement(query);
+            statement.setString(1, this.productType.getValue());
+            statement.setLong(2, productId);
+            products = getAllProducts(statement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (products.isEmpty()) {
             return null;
         }
+        return products.get(0);
+     }
+
+    public Product getProduct(String productName) {
+        String query = "select * from " + tableName + " where type = ? and name = ?";
+        PreparedStatement statement;
+        List<Product> products = null;
+        try {
+            statement = connectionDB.getConnection().prepareStatement(query);
+            statement.setString(1, this.productType.getValue());
+            statement.setString(2, productName);
+            products = getAllProducts(statement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (products.isEmpty()) {
+            return null;
+        }
+        return products.get(0);
     }
 
-    public Product getProductById(Long productId) {
-        List<Product> products = getAllProducts();
-        for (Product product : products) {
-            if (product.getId().compareTo(productId) == 0) {
-                return product;
-            }
-        }
-        return null;
-    }
 
-    public Product getProductByProductName(String productName) {
-        List<Product> products = getAllProducts();
-        for (Product product : products) {
-            if (product.getProductName().compareTo(productName) == 0) {
-                return product;
-            }
-        }
-        return null;
-    }
 
     // Save on product means add product to the existing products (avoid erasing existing file by PrintWriter)
     public void saveProduct(Product product) {
-        List<Product> products = getAllProducts();
-        products.add(product);
-        saveProducts(products);
+        PreparedStatement statement;
+        String query = "insert into " + tableName +
+                " (type, name, price, weight, count, color, sizeStr, sizeNum, material) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            statement = connectionDB.getConnection().prepareStatement(query);
+
+            statement.setString(1, product.getProductType().getValue());
+            statement.setString(2, product.getProductName());
+            statement.setDouble(3, product.getPrice());
+            statement.setDouble(4, product.getWeight());
+            statement.setDouble(5, product.getProductCount());
+            statement.setString(6, product.getColor().name());
+
+            switch (product.getProductType()) {
+                case BOOTS_ID:
+                    Boots boots = (Boots) product;
+                    statement.setString(7, "");
+                    statement.setInt(8, boots.getSize());
+                    statement.setString(9, boots.getSkinType().name());
+                    break;
+                case CLOTH_ID:
+                    Cloth cloth = (Cloth) product;
+                    statement.setString(7, cloth.getSize());
+                    statement.setInt(8, 0);
+                    statement.setString(9, cloth.getMaterial().name());
+                    break;
+                case PRODUCT_ID:
+                default:
+                    statement.setString(7, "");
+                    statement.setInt(8, 0);
+                    statement.setString(9, "");
+                    break;
+            }
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     //Save products means erase existing file contents
     public void saveProducts(List<Product> products) {
+            for (Product product : products) {
+                saveProduct(product);
+            }
+    }
+
+    public void removeProduct(Long productId) {
+        String query = "delete from " + tableName + " where id = ?";
+        PreparedStatement statement;
 
         try {
-            FileUtils.clearFile(fileName);
-            PrintWriter printWriter = new PrintWriter(new FileOutputStream(this.fileName, true));
-            for (Product product : products) {
-                printWriter.write(product.toString() + "\n");
-            }
-            printWriter.close();
-        } catch (FileNotFoundException e) {
+            statement = connectionDB.getConnection().prepareStatement(query);
+            statement.setLong(1, productId);
+            statement.execute();
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void removeProductById(Long productId) {
-        List<Product> products = getAllProducts();
-        for (Product product : products) {
-            if (product.getId().compareTo(productId) == 0) {
-                products.remove(product);
-                saveProducts(products);
-                break;
-            }
-        }
+        }      List<Product> products = getAllProducts();
      }
 
-    public void removeProductByName(String productName) {
-        List<Product> products = getAllProducts();
-        for (Product product : products) {
-            if (product.getProductName().compareTo(productName) == 0) {
-                products.remove(product);
-                saveProducts(products);
-                break;
-            }
+    public void removeProduct(String productName) {
+        String query = "delete from " + tableName + " where name = ?";
+        PreparedStatement statement;
+
+        try {
+            statement = connectionDB.getConnection().prepareStatement(query);
+            statement.setString(1, productName);
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    }
+     }
 
 }

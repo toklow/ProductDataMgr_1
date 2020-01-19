@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static enums.Separators.PRODUCT_ID;
+import static enums.ProductType.PRODUCT_ID;
 
 
 public class ProductDaoTest {
@@ -51,7 +51,7 @@ public class ProductDaoTest {
         //then
         ProductDaoImpl productDaoImpl = new ProductDaoImpl(PRODUCT_ID);
         productDaoImpl.saveProduct(product);
-        Product productFromFile = productDaoImpl.getProductById(product.getId());
+        Product productFromFile = productDaoImpl.getProduct(product.getId());
 
         //expected
         Assertions.assertNotNull(productFromFile);
@@ -65,8 +65,8 @@ public class ProductDaoTest {
         Long productId = products.get(1).getId();
 
         //then
-        productDaoImpl.removeProductById(productId);
-        Product productFromFile = productDaoImpl.getProductById(productId);
+        productDaoImpl.removeProduct(productId);
+        Product productFromFile = productDaoImpl.getProduct(productId);
 
         //expected
         Assertions.assertNull(productFromFile);

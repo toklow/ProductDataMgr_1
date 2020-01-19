@@ -5,7 +5,7 @@ import enums.Material;
 
 import java.util.Objects;
 
-import static enums.Separators.CLOTH_ID;
+import static enums.ProductType.CLOTH_ID;
 import static enums.Separators.FIELD_SEPARATOR;
 
 public class Cloth extends Product {
@@ -20,6 +20,14 @@ public class Cloth extends Product {
         this.size = size;
         this.material = material;
 
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public Material getMaterial() {
+        return material;
     }
 
     @Override

@@ -9,7 +9,7 @@ import service.ProductServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import static enums.Separators.PRODUCT_ID;
+import static enums.ProductType.PRODUCT_ID;
 
 public class ProductServiceTest {
 

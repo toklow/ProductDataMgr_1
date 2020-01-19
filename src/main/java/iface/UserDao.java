@@ -3,16 +3,14 @@ package iface;
 import entity.User;
 import exception.UserNotFoundException;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 public interface UserDao {
-    List<User> getAllUsers() throws IOException;
+    List<User> getAllUsers() ;
 
-    void saveUser(User user) throws IOException;
+    void saveUser(User user) ;
 
-    void saveUsers(List<User> users) throws FileNotFoundException;
+    void saveUsers(List<User> users) ;
 
     User getUser(String login) throws UserNotFoundException;
 
@@ -20,5 +18,5 @@ public interface UserDao {
 
     void removeUser(String login);
 
-    void removeUserById(Long id) throws IOException;
+    void removeUser(Long id);
 }

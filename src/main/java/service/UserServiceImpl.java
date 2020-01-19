@@ -9,7 +9,6 @@ import iface.UserDao;
 import iface.UserService;
 import utils.UserValidator;
 
-import java.io.IOException;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -40,18 +39,18 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public List<User> getAllUsers() throws IOException {
+    public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
 
-    public void addUser(User user) throws IOException {
+    public void addUser(User user) {
         if  (isUserValid(user)) {
              userDao.saveUser(user);
         }
       }
 
-    public void removeUserById(Long id) throws IOException {
-        userDao.removeUserById(id);
+    public void removeUserById(Long id) {
+        userDao.removeUser(id);
     }
 
 }

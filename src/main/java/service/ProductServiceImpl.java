@@ -2,7 +2,7 @@ package service;
 
 import dao.ProductDaoImpl;
 import entity.Product;
-import enums.Separators;
+import enums.ProductType;
 import exception.ProductCountNegativeException;
 import exception.ProductNameEmptyException;
 import exception.ProductPriceNoPositiveException;
@@ -15,22 +15,22 @@ import java.util.List;
 
 public class ProductServiceImpl implements ProductService  {
 
-    private static Separators productType;
+    private static ProductType productType;
     private static ProductServiceImpl instance = null;
     private static ProductDaoImpl productDao = null;
 
-    private ProductServiceImpl(Separators productType) {
+    private ProductServiceImpl(ProductType productType) {
         productDao = new ProductDaoImpl(productType);
     }
 
 
-    public static ProductServiceImpl getInstance(Separators productType) {
+    public static ProductServiceImpl getInstance(ProductType productType) {
         if (instance == null) {
             instance = new ProductServiceImpl(productType);
             ProductServiceImpl.productType = productType;
         }
         if (ProductServiceImpl.productType != productType) {
-            productDao.setProductFileName(productType);
+            productDao.setProductType(productType);
             ProductServiceImpl.productType = productType;
         }
 
@@ -57,25 +57,25 @@ public class ProductServiceImpl implements ProductService  {
     }
 
     public Product getProductByName(String productName) {
-        return productDao.getProductByProductName(productName);
+        return productDao.getProduct(productName);
     }
 
     public boolean isProductOnStockByName(String productName) {
-        Product product = productDao.getProductByProductName(productName);
+        Product product = productDao.getProduct(productName);
         if (product == null) {return false;}
         if (product.getProductCount() > 0) {return true;}
         return false;
     }
 
     public boolean isProductExist(String productName) {
-        if (productDao.getProductByProductName(productName) == null) {
+        if (productDao.getProduct(productName) == null) {
             return false;
         }
         return true;
     }
 
     public boolean isProductExist(Long productId) {
-        if (productDao.getProductById(productId) == null) {
+        if (productDao.getProduct(productId) == null) {
             return false;
         }
         return true;

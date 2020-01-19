@@ -1,10 +1,7 @@
 package enums;
 
 public enum Separators {
-    FIELD_SEPARATOR("#"),
-    PRODUCT_ID("P"),
-    CLOTH_ID("C"),
-    BOOTS_ID("B");
+    FIELD_SEPARATOR("#");
 
     private String value;
 

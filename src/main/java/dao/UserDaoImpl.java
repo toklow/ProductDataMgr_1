@@ -107,7 +107,7 @@ public class UserDaoImpl implements UserDao {
                         resultSet.getString("password"),
                         resultSet.getString("email"),
                         resultSet.getInt("age"),
-                        Role.valueToRole(resultSet.getInt("user_role_id")));
+                        Role.valueToEnum(resultSet.getInt("user_role_id")));
 
                 users.add(user);
             }
@@ -131,7 +131,7 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-    public void removeUserById(Long userId) {
+    public void removeUser(Long userId) {
         String query = "delete from " + tableName + " where id = ?";
         PreparedStatement statement;
 
