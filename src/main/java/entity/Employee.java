@@ -71,7 +71,7 @@ public class Employee {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), id, name, lastName);
+        return Objects.hash(this.name, this.lastName, this.age);
     }
 
 }
