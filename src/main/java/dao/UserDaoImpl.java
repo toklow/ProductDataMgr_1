@@ -45,14 +45,12 @@ public class UserDaoImpl implements UserDao {
         PreparedStatement statement;
 
         try {
-            String query = "insert into " + tableName + " (login, password, email, age, user_role_id) values(?, ?, ?, ?, ?)";
+            String query = "insert into " + tableName + " (login, password, role_id) values(?, ?, ?)";
             statement = connectionDB.getConnection().prepareStatement(query);
 
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
-            statement.setString(3, user.getEmail());
-            statement.setInt(4, user.getAge());
-            statement.setInt(5, user.getRoleId());
+            statement.setInt(3, user.getRoleId());
             statement.execute();
             statement.close();
         } catch (SQLException e) {
@@ -105,9 +103,7 @@ public class UserDaoImpl implements UserDao {
                 User user = new User(resultSet.getLong("id"),
                         resultSet.getString("login"),
                         resultSet.getString("password"),
-                        resultSet.getString("email"),
-                        resultSet.getInt("age"),
-                        Role.valueToEnum(resultSet.getInt("user_role_id")));
+                        Role.valueToEnum(resultSet.getInt("role_id")));
 
                 users.add(user);
             }
